@@ -3,7 +3,7 @@
 from typing import List, Dict, Any, Optional
 
 import qdrant_client
-from langchain.document import Document
+from langchain_core.documents import Document
 
 from app.providers.base import VectorStoreProvider
 
