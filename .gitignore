@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Environment
+.env
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Chroma
+chroma_db/
+chroma/
+
+# Qdrant
+qdrant_storage/
+
+# Logs
+*.log
+
+# Test cache
+.pytest_cache/
+
+# Python build
+build/
+dist/
+*.egg-info/
