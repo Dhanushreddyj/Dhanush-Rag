@@ -23,9 +23,11 @@ def _get_env_bool(key: str, default: bool = False) -> bool:
 
 
 # Provider selection — override via environment variables or config
-LLM_PROVIDER_NAME = os.environ.get("LLM_PROVIDER", "openai").lower()
-EMBEDDING_PROVIDER_NAME = os.environ.get("EMBEDDING_PROVIDER", "openai").lower()
-VECTOR_STORE_PROVIDER_NAME = os.environ.get("VECTOR_STORE_PROVIDER", "chroma").lower()
+from app.config import settings as _settings
+
+LLM_PROVIDER_NAME = os.environ.get("LLM_PROVIDER", _settings.LLM_PROVIDER).lower()
+EMBEDDING_PROVIDER_NAME = os.environ.get("EMBEDDING_PROVIDER", _settings.EMBEDDING_PROVIDER).lower()
+VECTOR_STORE_PROVIDER_NAME = os.environ.get("VECTOR_STORE_PROVIDER", _settings.VECTOR_STORE_PROVIDER).lower()
 
 
 def get_llm_provider(**kwargs) -> Any:

@@ -46,7 +46,7 @@ def generate_answer_with_sources(
         "query": query,
         "answer": result["answer"],
         "sources": context_docs,
-        "model_used": result.get("model_used", settings.OPENAI_MODEL),
+        "model_used": result["model_used"],
     }
 
 

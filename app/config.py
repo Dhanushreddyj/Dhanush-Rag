@@ -22,8 +22,12 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "text-embedding-3-small"
     EMBEDDING_DIMENSION: int = 1536
 
-    # LLM
-    LLM_PROVIDER: str = "LM STUDIO"
+    # Providers (override via environment variables)
+    LLM_PROVIDER: str = "openai"
+    EMBEDDING_PROVIDER: str = "openai"
+    VECTOR_STORE_PROVIDER: str = "chroma"
+
+    # OpenAI
     OPENAI_API_KEY: Optional[str] = None
     OPENAI_MODEL: str = "gpt-4o-mini"
     OPENAI_BASE_URL: Optional[str] = None

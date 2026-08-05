@@ -148,17 +148,37 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
             base_url=self.base_url,
         )
 
-    def embed_text(self, text: str) -> List[float]:
+    async def embed_query(self, text: str) -> List[float]:
+        """Async embedding for a single query string."""
         try:
-            return self._get_embeddings().embed_query(text)
+            response = await self._get_embeddings().acreate(input=text)  # type: ignore
+            return response.data[0].embedding
         except LLMCallErrorException as e:
             raise RuntimeError(f"Embedding API error: {e}") from e
 
-    def embed_texts(self, texts: List[str]) -> List[List[float]]:
+    async def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        """Async embedding for multiple document strings."""
         try:
-            return self._get_embeddings().embed_documents(texts)
+            response = await self._get_embeddings().acreate(input=texts)  # type: ignore
+            return [d.embedding for d in response.data]
         except LLMCallErrorException as e:
             raise RuntimeError(f"Embedding API error: {e}") from e
+
+    def embed_text(self, text: str) -> List[float]:
+        """Sync wrapper — calls the async method."""
+        import asyncio
+
+        return asyncio.get_event_loop().run_until_complete(
+            self.embed_query(text)
+        )
+
+    def embed_texts(self, texts: List[str]) -> List[List[float]]:
+        """Sync wrapper — calls the async method."""
+        import asyncio
+
+        return asyncio.get_event_loop().run_until_complete(
+            self.embed_documents(texts)
+        )
 
 
 class OpenAIVectorStoreProvider(VectorStoreProvider):
