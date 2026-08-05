@@ -1,0 +1,47 @@
+# Sample Sale Agreement
+
+## PROPERTY DETAILS
+
+Property Type: Residential Apartment
+Location: Hyderabad, Telangana
+Survey Number: 123/4/A
+Total Area: 2400 sqft
+Carpet Area: 1850 sqft
+Floor: 5th Floor
+Total Floors: 12
+
+## AGREEMENT TERMS
+
+1. Sale Price: INR 1,20,00,000 (One Crore Twenty Lakhs)
+2. Token Amount: INR 5,00,000
+3. Advance Payment: INR 25,00,000
+4. Balance Payment: At the time of registration
+
+## PAYMENT SCHEDULE
+
+- Token: On signing this agreement
+- 25%: Within 30 days
+- 50%: Within 60 days
+- Balance: At registration
+
+## SELLER OBLIGATIONS
+
+1. Provide clear title documents
+2. Obtain necessary approvals and NOCs
+3. Pay all outstanding property taxes
+4. Vacate the property by agreed date
+5. Transfer all utility connections
+
+## BUYER OBLIGATIONS
+
+1. Make payments as per schedule
+2. Complete loan documentation if applicable
+3. Pay stamp duty and registration fees
+4. Take possession on agreed date
+
+## CONDITIONS
+
+1. This agreement is subject to title verification
+2. Property should be free from all encumbrances
+3. All approvals must be valid and current
+4. Possession to be given within 90 days

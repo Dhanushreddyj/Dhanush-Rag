@@ -1,0 +1,71 @@
+"""
+Configuration settings for the RAG service
+"""
+
+import os
+from pathlib import Path
+from pydantic_settings import BaseSettings
+from typing import Optional
+
+
+class Settings(BaseSettings):
+    # App
+    APP_NAME: str = "RealEstateRAG"
+    ENV: str = "development"
+
+    # Paths
+    BASE_DIR: Path = Path(__file__).resolve().parent.parent
+    CHROMA_DIR: Path = BASE_DIR / "data" / "chroma"
+    DOCS_DIR: Path = BASE_DIR / "data" / "documents"
+
+    # Embeddings
+    EMBEDDING_MODEL: str = "text-embedding-3-small"
+    EMBEDDING_DIMENSION: int = 1536
+
+    # LLM
+    LLM_PROVIDER: str = "LM STUDIO"
+    OPENAI_API_KEY: Optional[str] = None
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    OPENAI_BASE_URL: Optional[str] = None
+
+    # RAG parameters
+    TOP_K: int = 5
+    MAX_CHUNK_SIZE: int = 1000
+    CHUNK_OVERLAP: int = 150
+    MIN_QUERY_LENGTH: int = 3
+    MAX_QUERY_LENGTH: int = 2048
+    MAX_CONTEXT_DOCS: int = 10
+
+    # ChromaDB
+    CHROMA_PERSISTENCE: bool = True
+
+    # Rate limiting (requests per minute)
+    RATE_LIMIT_PER_MINUTE: int = 60
+    RATE_LIMIT_WINDOW_SECONDS: float = 60.0
+
+    # Caching
+    CACHE_ENABLED: bool = True
+    CACHE_TTL_SECONDS: int = 300  # 5 minutes
+    MAX_CACHE_SIZE: int = 1000
+
+    # Logging
+    LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "json"
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+
+
+# Create settings instance
+settings = Settings()
+print("Loaded BASE URL:", settings.OPENAI_BASE_URL)
+print("Loaded EMBEDDING MODEL:", settings.EMBEDDING_MODEL)
+
+# Validate required settings
+if not settings.OPENAI_API_KEY:
+    raise ValueError("OPENAI_API_KEY is required. Set it in your .env file.")
+
+# Ensure directories exist
+settings.CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+settings.DOCS_DIR.mkdir(parents=True, exist_ok=True)

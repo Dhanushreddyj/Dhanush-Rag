@@ -1,0 +1,35 @@
+# Property Listing Details
+
+## PROPERTY ID: HYD-APT-2024-001
+
+Location: Gachibowli, Hyderabad
+Property Type: 3 BHK Apartment
+Built-up Area: 1650 sqft
+Floor: 8th of 15 floors
+Age: 2 years
+Parking: 2 covered slots
+Facing: East
+
+## AMENITIES
+
+- 24/7 Security
+- Swimming Pool
+- Gymnasium
+- Clubhouse
+- Children's Play Area
+- Power Backup
+- Elevator
+- Rainwater Harvesting
+
+## PRICE DETAILS
+
+Asking Price: INR 1,45,00,000
+Price per sqft: INR 8,788
+Maintenance: INR 3,500/month
+Property Tax: INR 18,000/year
+
+## CONTACT
+
+Owner: Rajesh Kumar
+Phone: +91-98765-43210
+Email: rajesh@example.com
