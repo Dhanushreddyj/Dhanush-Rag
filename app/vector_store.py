@@ -43,13 +43,13 @@ async def add_documents(
 
 async def delete_collection() -> None:
     """Delete the entire collection (use with caution)."""
-    global _vector_store
-    _vector_store = None
-
-    from app.embeddings import get_embeddings  # avoid circular import at module level
-    embeddings = get_embeddings()
     vector_store = get_vector_store()
     await vector_store.delete_collection()
+
+    # Invalidate cache — lru_cache has no per-entry invalidation, so we must clear all entries.
+    # Without this, subsequent calls to get_vector_store() would return a provider pointing
+    # to the now-deleted collection.
+    get_vector_store.cache_clear()
 
 
 async def get_collection_stats() -> Dict[str, Any]:
