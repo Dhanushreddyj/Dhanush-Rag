@@ -1,4 +1,4 @@
-"""Quick sanity check — does the provider layer load without errors."""
+v"""Quick sanity check — does the provider layer load without errors."""
 
 from pathlib import Path
 import sys, os

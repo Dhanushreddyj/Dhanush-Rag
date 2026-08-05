@@ -23,11 +23,11 @@ class Settings(BaseSettings):
     EMBEDDING_DIMENSION: int = 1536
 
     # Providers (override via environment variables)
-    LLM_PROVIDER: str = "openai"
-    EMBEDDING_PROVIDER: str = "openai"
-    VECTOR_STORE_PROVIDER: str = "chroma"
+    LLM_PROVIDER: str = "openai_compatible"
+    EMBEDDING_PROVIDER: str = "openai_compatible"
+    VECTOR_STORE_PROVIDER: str = "qdrant"
 
-    # OpenAI
+    # OpenAI-compatible API (e.g., LM Studio, Bedrock endpoint)
     OPENAI_API_KEY: Optional[str] = None
     OPENAI_MODEL: str = "gpt-4o-mini"
     OPENAI_BASE_URL: Optional[str] = None
@@ -63,13 +63,45 @@ class Settings(BaseSettings):
 
 # Create settings instance
 settings = Settings()
-print("Loaded BASE URL:", settings.OPENAI_BASE_URL)
-print("Loaded EMBEDDING MODEL:", settings.EMBEDDING_MODEL)
 
-# Validate required settings
-if not settings.OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY is required. Set it in your .env file.")
 
-# Ensure directories exist
-settings.CHROMA_DIR.mkdir(parents=True, exist_ok=True)
-settings.DOCS_DIR.mkdir(parents=True, exist_ok=True)
+def validate_settings():
+    """Validate configuration based on selected providers."""
+    if settings.LLM_PROVIDER == "openai_compatible" and not settings.OPENAI_API_KEY:
+        raise ValueError(
+            "OPENAI_API_KEY is required for openai_compatible LLM provider. "
+            "Set it in your .env file or export OPENAI_API_KEY."
+        )
+
+    if settings.LLM_PROVIDER == "bedrock":
+        import boto3
+        try:
+            boto3.client("bedrock-runtime")
+        except Exception as e:
+            raise ValueError(
+                "AWS credentials are required for Bedrock provider. "
+                "Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY or configure via aws configure."
+            ) from e
+
+    if settings.EMBEDDING_PROVIDER == "openai_compatible" and not settings.OPENAI_API_KEY:
+        raise ValueError(
+            "OPENAI_API_KEY is required for openai_compatible embedding provider. "
+            "Set it in your .env file or export OPENAI_API_KEY."
+        )
+
+    if settings.EMBEDDING_PROVIDER == "bedrock":
+        import boto3
+        try:
+            boto3.client("bedrock-runtime")
+        except Exception as e:
+            raise ValueError(
+                "AWS credentials are required for Bedrock embedding provider. "
+                "Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY or configure via aws configure."
+            ) from e
+
+    # Ensure directories exist
+    settings.CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+    settings.DOCS_DIR.mkdir(parents=True, exist_ok=True)
+
+# NOTE: validate_settings() is called explicitly from app/main.py during application startup.
+# Importing this module should never make network calls or raise exceptions.

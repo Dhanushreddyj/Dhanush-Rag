@@ -47,10 +47,13 @@ app.add_middleware(create_rate_limit_middleware(app))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
+    from app.config import validate_settings
+
+    # Startup — validate configuration before starting services
+    validate_settings()
     print(f"Starting {settings.APP_NAME}...")
     vector_store = get_vector_store()
-    print(f"ChromaDB initialized at: {settings.CHROMA_DIR}")
+    print("Vector store initialized.")
     yield
     # Shutdown
     print("Shutting down...")

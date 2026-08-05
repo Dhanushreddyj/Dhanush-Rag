@@ -40,7 +40,7 @@ def get_llm_provider(**kwargs) -> Any:
             model_id=kwargs.get("model_id", os.environ.get("BEDROCK_MODEL_ID", "")),
             credentials=kwargs.get("credentials"),
         )
-    elif LLM_PROVIDER_NAME == "openai":
+    elif LLM_PROVIDER_NAME in ("openai", "openai_compatible"):
         from app.providers.openai import OpenAILLMProvider
 
         return OpenAILLMProvider(
@@ -77,7 +77,7 @@ def get_embeddings_provider(**kwargs) -> Any:
 def get_vector_store_provider(**kwargs) -> Any:
     """Return the configured vector store provider."""
     if VECTOR_STORE_PROVIDER_NAME == "qdrant":
-        from app.providers.qdrant import QdrantVectorStoreProvider
+        from app.providers.vectorstore.qdrant import QdrantVectorStoreProvider
 
         return QdrantVectorStoreProvider(
             host=kwargs.get("host", os.environ.get("QDRANT_HOST", "")),
