@@ -83,6 +83,7 @@ def get_vector_store_provider(**kwargs) -> Any:
             host=kwargs.get("host", os.environ.get("QDRANT_HOST", "")),
             api_key=kwargs.get("api_key", os.environ.get("QDRANT_API_KEY", "")),
             collection_name=kwargs.get("collection_name", os.environ.get("QDRANT_COLLECTION_NAME", "default")),
+            embedding_function=kwargs.get("embedding_function"),
         )
     elif VECTOR_STORE_PROVIDER_NAME == "chroma":
         from app.providers.chroma import ChromaVectorStoreProvider

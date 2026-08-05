@@ -1,11 +1,14 @@
 """Qdrant vector store provider — implements VectorStoreProvider interface."""
 
 from typing import List, Dict, Any, Optional
+
 import qdrant_client
 from langchain.document import Document
 
+from app.providers.base import VectorStoreProvider
 
-class QdrantVectorStoreProvider:
+
+class QdrantVectorStoreProvider(VectorStoreProvider):
     """Qdrant-backed vector store.
 
     Usage (via factory):
@@ -28,8 +31,12 @@ class QdrantVectorStoreProvider:
         self.collection_name = collection_name
         self.embedding_function = embedding_function
 
+    async def create_collection(self) -> None:
+        """Create the collection (idempotent — no-op if exists)."""
+        self._ensure_collection()  # creates if missing, returns existing
+
     def _ensure_collection(self):
-        """Create or get the collection."""
+        """Create or get the collection (synchronous — for internal use)."""
         try:
             return self._client.get_collection(self.collection_name)
         except qdrant_client.CollectionNotFoundError:
@@ -103,6 +110,11 @@ class QdrantVectorStoreProvider:
                 metadatas=metadatas,
             )
 
+    async def reset_collection(self) -> None:
+        """Reset (drop and recreate) the collection."""
+        await self.delete_collection()
+        await self.create_collection()
+
     async def delete_collection(self) -> None:
         """Delete the entire collection."""
         try:
@@ -129,3 +141,4 @@ class QdrantVectorStoreProvider:
             score = doc.metadata.pop("_score", None)  # type: ignore
             results.append((doc, score))
         return results
+
