@@ -1,34 +1,30 @@
-"""
-Embedding generation using OpenAI-compatible API (LM Studio)
-"""
+"""Embedding generation — delegates to the configured provider."""
 
-from langchain_openai import OpenAIEmbeddings
+from typing import List, Any
+from functools import lru_cache
 
 from app.config import settings
+from app.providers.base import EmbeddingProvider
+from app.providers.openai import OpenAIEmbeddingProvider
 
 
-def get_embeddings() -> OpenAIEmbeddings:
-    """
-    Create embeddings instance using LM Studio OpenAI-compatible API
-    """
-    return OpenAIEmbeddings(
-        model=settings.EMBEDDING_MODEL,
+@lru_cache(maxsize=1)
+def get_embeddings() -> EmbeddingProvider:
+    """Return the configured embedding provider (singleton)."""
+    return OpenAIEmbeddingProvider(
         api_key=settings.OPENAI_API_KEY,
         base_url=settings.OPENAI_BASE_URL,
+        model=settings.EMBEDDING_MODEL,
     )
 
 
-def embed_text(text: str) -> list:
-    """
-    Embed a single text string
-    """
+async def embed_text(text: str) -> List[float]:
+    """Embed a single text string."""
     embeddings = get_embeddings()
-    return embeddings.embed_query(text)
+    return await embeddings.embed_query(text)
 
 
-def embed_texts(texts: list) -> list:
-    """
-    Embed multiple text strings
-    """
+async def embed_texts(texts: List[str]) -> "List[List[float]]":
+    """Embed multiple text strings."""
     embeddings = get_embeddings()
-    return embeddings.embed_documents(texts)
+    return await embeddings.embed_documents(texts)
