@@ -8,17 +8,13 @@ be swapped via environment variables or a config flag.
 from typing import List, Dict, Any, Optional
 from functools import lru_cache
 
-from app.config import settings
-
 
 @lru_cache(maxsize=1)
 def get_vector_store() -> Any:
     """Return the configured vector store provider (singleton)."""
     from app.providers.factory import get_vector_store_provider as _factory
 
-    return _factory(
-        persist_directory=str(settings.CHROMA_DIR),
-    )
+    return _factory()
 
 
 async def similarity_search(

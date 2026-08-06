@@ -56,52 +56,11 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "json"
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # Qdrant (local or cloud)
+    QDRANT_URL: Optional[str] = None  # Cloud deployment URL; overrides host/port if set
+    QDRANT_HOST: str = "localhost"
+    QDRANT_API_KEY: Optional[str] = None
+    QDRANT_COLLECTION_NAME: str = "default"
 
 
-# Create settings instance
 settings = Settings()
-
-
-def validate_settings():
-    """Validate configuration based on selected providers."""
-    if settings.LLM_PROVIDER == "openai_compatible" and not settings.OPENAI_API_KEY:
-        raise ValueError(
-            "OPENAI_API_KEY is required for openai_compatible LLM provider. "
-            "Set it in your .env file or export OPENAI_API_KEY."
-        )
-
-    if settings.LLM_PROVIDER == "bedrock":
-        import boto3
-        try:
-            boto3.client("bedrock-runtime")
-        except Exception as e:
-            raise ValueError(
-                "AWS credentials are required for Bedrock provider. "
-                "Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY or configure via aws configure."
-            ) from e
-
-    if settings.EMBEDDING_PROVIDER == "openai_compatible" and not settings.OPENAI_API_KEY:
-        raise ValueError(
-            "OPENAI_API_KEY is required for openai_compatible embedding provider. "
-            "Set it in your .env file or export OPENAI_API_KEY."
-        )
-
-    if settings.EMBEDDING_PROVIDER == "bedrock":
-        import boto3
-        try:
-            boto3.client("bedrock-runtime")
-        except Exception as e:
-            raise ValueError(
-                "AWS credentials are required for Bedrock embedding provider. "
-                "Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY or configure via aws configure."
-            ) from e
-
-    # Ensure directories exist
-    settings.CHROMA_DIR.mkdir(parents=True, exist_ok=True)
-    settings.DOCS_DIR.mkdir(parents=True, exist_ok=True)
-
-# NOTE: validate_settings() is called explicitly from app/main.py during application startup.
-# Importing this module should never make network calls or raise exceptions.

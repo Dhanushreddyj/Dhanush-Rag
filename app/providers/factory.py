@@ -80,7 +80,8 @@ def get_vector_store_provider(**kwargs) -> Any:
         from app.providers.vectorstore.qdrant import QdrantVectorStoreProvider
 
         return QdrantVectorStoreProvider(
-            host=kwargs.get("host", os.environ.get("QDRANT_HOST", "")),
+            url=kwargs.get("url") or os.environ.get("QDRANT_URL"),
+            host=kwargs.get("host") or os.environ.get("QDRANT_HOST", ""),
             api_key=kwargs.get("api_key", os.environ.get("QDRANT_API_KEY", "")),
             collection_name=kwargs.get("collection_name", os.environ.get("QDRANT_COLLECTION_NAME", "default")),
             embedding_function=kwargs.get("embedding_function"),

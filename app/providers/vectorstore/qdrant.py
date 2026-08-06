@@ -1,4 +1,7 @@
-"""Qdrant vector store provider — implements VectorStoreProvider interface."""
+"""Qdrant vector store provider — implements VectorStoreProvider interface.
+
+Uses qdrant-client 1.19.x API (client-level methods, not collection objects).
+"""
 
 from typing import List, Dict, Any, Optional
 
@@ -14,7 +17,7 @@ class QdrantVectorStoreProvider(VectorStoreProvider):
     Usage (via factory):
         from app.providers.factory import get_vector_store_provider
         provider = get_vector_store_provider(
-            host="http://localhost",
+            url="https://qdrant-xyz.com",
             api_key="your-key",
             collection_name="my_collection",
         )
@@ -22,58 +25,131 @@ class QdrantVectorStoreProvider(VectorStoreProvider):
 
     def __init__(
         self,
-        host: str,
-        api_key: str,
+        url: Optional[str] = None,
+        host: str = "localhost",
+        port: int = 6041,
+        api_key: Optional[str] = None,
         collection_name: str = "documents",
         embedding_function=None,  # type: ignore (optional callable)
     ):
-        self._client = qdrant_client.QdrantClient(host=host, api_key=api_key)
+        """Initialize the Qdrant provider.
+
+        Args:
+            url: Cloud deployment URL (e.g., https://qdrant-xyz.com). Overrides host/port if set.
+            host: Local Qdrant server hostname (used when url is not provided).
+            port: Port to use for local connection.
+            embedding_function: Callable that takes a list of texts and returns embeddings.
+        """
+        self.url = url
+        self.host = host
+        self.port = port
+        self.api_key = api_key or ""
         self.collection_name = collection_name
         self.embedding_function = embedding_function
 
+        if url:
+            import qdrant_client as _qc
+
+            self._client = _qc.QdrantClient(url=url, api_key=api_key)
+        else:
+            self._client = qdrant_client.QdrantClient(
+                host=host, port=port, api_key=api_key
+            )
+
     async def create_collection(self) -> None:
         """Create the collection (idempotent — no-op if exists)."""
-        self._ensure_collection()  # creates if missing, returns existing
+        from app.config import settings as _settings
+
+        if self._client.collection_exists(self.collection_name):
+            return  # already exists
+
+        dimension = getattr(_settings, "EMBEDDING_DIMENSION", None)
+        if dimension is not None and isinstance(dimension, int):
+            vectors_config = qdrant_client.http.models.models.VectorParams(
+                size=dimension, distance_metric="Float64"
+            )
+        else:
+            raise RuntimeError(
+                "EMBEDDING_DIMENSION must be set in settings for Qdrant collection creation. "
+                "Add EMBEDDING_DIMENSION = <int> to app/config.py."
+            )
+
+        self._client.create_collection(
+            collection_name=self.collection_name,
+            vectors_config=vectors_config,
+            metadata={"created_at": "auto"},
+        )
 
     def _ensure_collection(self):
         """Create or get the collection (synchronous — for internal use)."""
-        try:
-            return self._client.get_collection(self.collection_name)
-        except qdrant_client.CollectionNotFoundError:
-            return self._client.create_collection(
-                name=self.collection_name,
-                metadata={"created_at": "auto"},
+        if not self._client.collection_exists(self.collection_name):
+            raise RuntimeError(
+                f"Collection '{self.collection_name}' does not exist. "
+                "Call create_collection() first."
             )
 
     async def similarity_search(
         self, query: str, k: int = 5, filters: Optional[Dict[str, Any]] = None
     ) -> List[Any]:
-        """Search for similar documents."""
-        collection = self._ensure_collection()
+        """Search for similar documents using the Qdrant SDK directly."""
+        from qdrant_client.http.models.models import Filter
 
-        # Embed the query using the configured embedding function
-        if self.embedding_function is not None:
-            query_embedding = await self.embedding_function(query)
-        else:
-            raise ValueError("embedding_function is required for similarity search")
+        try:
+            # Convert langchain-style filter dict to Qdrant Filter if provided
+            query_filter = None
+            if filters:
+                query_filter = self._build_qdrant_filter(filters)
 
-        results = collection.query(
-            vectors=[query_embedding],
-            n=k,
-            filter=filters or {},
-        )
+            response = await asyncio.to_thread_safe(self._client.query_points)(
+                collection_name=self.collection_name,
+                query=query,
+                limit=k,
+                with_payload=True,
+                with_vectors=False,
+                query_filter=query_filter,
+            )
 
-        # Convert Qdrant results to Document objects
-        documents = []
-        for result in results:
-            doc_id = result.get("id", "")
-            metadata = result.get("metadata", {})
-            content = metadata.pop("_content", "")  # remove internal field
-            doc = Document(page_content=content, metadata=metadata)
-            doc.metadata["_score"] = result.get("distance")
-            documents.append(doc)
+            docs = []
+            for result in response.results:
+                payload = getattr(result, "payload", {}) or {}
+                content = payload.pop("_content", "")
+                doc = Document(
+                    page_content=content,
+                    metadata={**payload, "_score": result.score},
+                )
+                docs.append(doc)
 
-        return documents
+            return docs
+        except Exception as e:
+            raise RuntimeError(f"Qdrant similarity search failed: {e}")
+
+    def _build_qdrant_filter(self, filters: Dict[str, Any]) -> "Filter":  # type: ignore (forward ref)
+        """Convert a dict of filter conditions to Qdrant Filter."""
+        from qdrant_client.http.models.models import Filter as QdrantFilter
+
+        conditions = []
+        for key, value in filters.items():
+            if isinstance(value, dict):
+                op = value.get("op", "eq")
+                val = value.get("value")
+                if op == "eq":
+                    conditions.append(QdrantFilter(key=key, value=val))
+                elif op == "neq":
+                    conditions.append(
+                        QdrantFilter(key=key, operator="neq", value=val)
+                    )
+                elif op == "in":
+                    conditions.append(
+                        QdrantFilter(key=key, operator="in", value=value.get("values", []))
+                    )
+            else:
+                # Simple equality filter
+                conditions.append(QdrantFilter(key=key, value=value))
+
+        if not conditions:
+            return None  # type: ignore (None means no filtering)
+
+        return QdrantFilter(conditions=conditions, operator="and")
 
     async def add_documents(
         self,
@@ -82,33 +158,33 @@ class QdrantVectorStoreProvider(VectorStoreProvider):
         batch_size: int = 100,
     ) -> None:
         """Add documents to the vector store."""
-        collection = self._ensure_collection()
+        from qdrant_client.http.models.models import PointStruct
+
+        self._ensure_collection()
 
         for i in range(0, len(documents), batch_size):
             batch = documents[i : i + batch_size]
             batch_ids = ids[i : i + batch_size] if ids else None
 
             # Prepare data for Qdrant
-            vectors = []
-            metadatas = []
-            for doc in batch:
+            points = []
+            for idx, doc in enumerate(batch):
                 content = doc.page_content if hasattr(doc, "page_content") else str(doc)
                 metadata = getattr(doc, "metadata", {}) or {}
                 metadata["_content"] = content  # store content in metadata
+
+                point_id = batch_ids[idx] if batch_ids and idx < len(batch_ids) else None
 
                 if self.embedding_function is not None:
                     embedding = await self.embedding_function(content)
                 else:
                     raise ValueError("embedding_function is required for add_documents")
 
-                vectors.append(embedding)
-                metadatas.append(metadata)
+                points.append(
+                    PointStruct(id=point_id, vector=embedding, metadata=metadata)
+                )
 
-            collection.add(
-                ids=batch_ids,
-                vectors=vectors,
-                metadatas=metadatas,
-            )
+            self._client.upsert(collection_name=self.collection_name, points=points)
 
     async def reset_collection(self) -> None:
         """Reset (drop and recreate) the collection."""
@@ -119,17 +195,24 @@ class QdrantVectorStoreProvider(VectorStoreProvider):
         """Delete the entire collection."""
         try:
             self._client.delete_collection(self.collection_name)
-        except qdrant_client.CollectionNotFoundError:
-            pass  # already deleted
+        except Exception as e:
+            # Handle both old and new SDK error types
+            if "not found" not in str(e).lower():
+                raise
 
     async def get_collection_stats(self) -> Dict[str, Any]:
         """Get collection statistics."""
-        collection = self._ensure_collection()
-        stats = collection.stats()
-        return {
-            "count": stats.get("num_vectors", 0),
-            "metadata": collection.metadata,
-        }
+        self._ensure_collection()
+        try:
+            info = self._client.get_collection(self.collection_name)
+            return {
+                "count": getattr(info, "num_vectors", 0),
+                "metadata": dict(getattr(info, "metadata", {}) or {}),
+            }
+        except Exception as e:
+            if "not found" not in str(e).lower():
+                raise
+            return {"count": 0, "metadata": {}}
 
     async def similarity_search_with_score(
         self, query: str, k: int = 5, filters: Optional[Dict[str, Any]] = None
@@ -141,4 +224,3 @@ class QdrantVectorStoreProvider(VectorStoreProvider):
             score = doc.metadata.pop("_score", None)  # type: ignore
             results.append((doc, score))
         return results
-
