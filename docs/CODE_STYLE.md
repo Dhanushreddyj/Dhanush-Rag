@@ -25,7 +25,7 @@ Code must optimize for readability, explicit dependencies, strong typing, testab
 
 ## 3. Python Baseline
 
-- Python 3.14+ is the language baseline.
+- CPython 3.14.7 is the required language runtime.
 - Source is UTF-8.
 - Use four spaces for indentation; tabs are prohibited in Python source.
 - Keep lines readable; target at most 100 characters unless readability is materially worse after wrapping.

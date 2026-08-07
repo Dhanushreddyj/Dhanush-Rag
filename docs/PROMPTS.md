@@ -1,9 +1,9 @@
 # Enterprise AI Platform — Controlled Cline Prompt Registry
 
-**Status:** CL-001 DRAFT — EXECUTION BLOCKED PENDING GOVERNANCE CORRECTION  
-**Version:** 1.0  
-**Last Updated:** 2026-08-07  
-**Implementation State:** BLOCKED — CL-001 pending governance correction
+**Status:** CL-001 ARCHITECT APPROVED — EXECUTION AUTHORIZED
+**Version:** 1.0
+**Last Updated:** 2026-08-07
+**Implementation State:** AUTHORIZED — CL-001 only
 
 ## 1. Purpose
 
@@ -83,7 +83,7 @@ Do not modify any other file without stopping and reporting the blocker.
 
 ARCHITECTURE CONSTRAINTS
 
-- CPython 3.14.x only (>=3.14,<3.15) / Pydantic settings.
+- CPython 3.14.7 only / Pydantic settings.
 - Provider selection is configuration/composition-owned.
 - Development LLM is local Qwen 3.6 through LM Studio's OpenAI-compatible
   endpoint.
