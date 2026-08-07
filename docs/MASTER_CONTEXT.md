@@ -6,7 +6,7 @@
 **Owner:** Dhanush Reddy  
 **Primary Architect:** ChatGPT (Principal AI Architect)  
 **Implementation Engineer:** Cline (Local Qwen 3.6)  
-**Repository:** https://github.com/Dhanushreddyj/python-rag.git
+**Repository:** https://github.com/Dhanushreddyj/Dhanush-Rag.git
 
 ## 1. Project Mission
 
