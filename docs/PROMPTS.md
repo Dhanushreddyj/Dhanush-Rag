@@ -35,12 +35,12 @@ Every implementation prompt states:
 
 | Prompt | Task | Status | Notes |
 | --- | --- | --- | --- |
-| CL-001 | FND-001 Configuration/startup validation | ARCHITECT_APPROVED | only currently executable prompt |
+| CL-001 | FND-001 Configuration/startup validation | BLOCKED_GOVERNANCE_CORRECTION | promote after gate revalidation |
 | CL-002+ | subsequent tasks | NOT GENERATED | generate only after preceding diff/review |
 
 ## 5. CL-001 — FND-001 Configuration/Startup Validation
 
-**Status: ARCHITECT_APPROVED — EXECUTE FND-001 ONLY**
+**Status: DRAFT — DO NOT EXECUTE UNTIL GOVERNANCE CORRECTION IS REVALIDATED**
 
 ```text
 You are implementing FND-001 for the Enterprise AI Platform for Real Estate.

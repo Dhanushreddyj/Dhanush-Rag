@@ -3,7 +3,7 @@
 **Status:** ACCEPTED PLANNING BASELINE  
 **Version:** 1.0  
 **Last Updated:** 2026-08-07  
-**Implementation State:** AUTHORIZED — FND-001 only
+**Implementation State:** BLOCKED — governance correction required before FND-001
 
 ## 1. Purpose
 

@@ -89,12 +89,12 @@ No implementation task may silently choose these decisions.
 
 ## 7. Implementation-Entry Recommendation
 
-**Decision: APPROVED by the project owner for Phase 1 Runtime Foundation Hardening, beginning with FND-001 only.**
+**Decision: NOT YET APPROVED — governance corrections must be pushed and revalidated before FND-001.**
 
 The controlled execution sequence is:
 
-- FND-001 is promoted to `READY`;
-- CL-001 is `ARCHITECT_APPROVED/EXECUTABLE`;
+- FND-001 remains blocked until the correction gate passes;
+- CL-001 remains blocked until the governance correction is revalidated;
 - run only CL-001 in Cline;
 - return the diff/test output for senior-engineer review;
 - do not generate/execute CL-002 until FND-001 review is accepted.
@@ -112,9 +112,9 @@ This recommendation does **not** authorize LangGraph, feature expansion, product
 | Security/testing/API/observability standards defined | PASS |
 | ADR deferrals explicit | PASS |
 | Phase roadmap/task dependencies defined | PASS |
-| First Cline prompt narrowly scoped | PASS — ARCHITECT_APPROVED |
+| First Cline prompt narrowly scoped | PASS — pending governance gate |
 | Current code production-ready | FAIL — expected; hardening required |
-| Implementation authorized by owner | PASS — FND-001 only |
+| Implementation authorized by owner | BLOCKED — governance correction required |
 
 ## 9. Review Discipline After Entry
 
