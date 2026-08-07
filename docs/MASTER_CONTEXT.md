@@ -76,7 +76,7 @@ Earlier numeric architecture scores and percentage estimates are treated as hist
 
 | Category | Approved Direction |
 | --- | --- |
-| Programming Language | Python 3.14+ with AsyncIO / async-first I/O |
+| Programming Language | CPython 3.14.7 with AsyncIO / async-first I/O |
 | Framework | FastAPI for HTTP delivery; Pydantic for typed data contracts and validation |
 | Agent Framework | LangGraph for agent orchestration only |
 | Provider Strategy | Configuration-driven provider contracts. Development LLM: local Qwen 3.6 through LM Studio's OpenAI-compatible endpoint. Development embeddings: current development configuration. Production LLM: AWS Bedrock models. Production embeddings: AWS Bedrock Embedding Models. Exactly one implementation per provider capability is active at a time. |

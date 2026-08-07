@@ -113,7 +113,7 @@ The approved production direction is:
 
 | Category | Approved Direction |
 | --- | --- |
-| Programming Language | Python 3.14+ with async-first I/O |
+| Programming Language | CPython 3.14.7 with async-first I/O |
 | Framework | FastAPI for HTTP delivery; Pydantic for typed contracts/validation |
 | Agent Framework | LangGraph for agent orchestration only |
 | Provider Strategy | Configuration-driven provider contracts. Production LLM: AWS Bedrock models. Production embeddings: AWS Bedrock Embedding Models. Exactly one implementation per provider capability is active at a time. Business/application logic remains provider-agnostic. |

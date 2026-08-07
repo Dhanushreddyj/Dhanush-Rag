@@ -3,7 +3,7 @@
 **Status:** ACCEPTED PLANNING BASELINE  
 **Version:** 1.0  
 **Last Updated:** 2026-08-07  
-**Implementation State:** BLOCKED — governance correction required before FND-001
+**Implementation State:** FND-001 `READY` — AUTHORIZED FOR IMPLEMENTATION
 
 ## 1. Purpose
 
@@ -25,7 +25,7 @@ Priorities: `P0` foundation/blocker, `P1` V1 capability, `P2` production hardeni
 
 | ID | Priority | Task | Depends On | Status |
 | --- | --- | --- | --- | --- |
-| FND-001 | P0 | Configuration/startup validation boundary | governance correction complete | BLOCKED_GOVERNANCE_CORRECTION |
+| FND-001 | P0 | Configuration/startup validation boundary | governance correction complete | READY |
 | FND-002 | P0 | Platform error taxonomy and safe boundary errors | FND-001 | PLANNED |
 | FND-003 | P0 | Normalize async LLM/Embedding/VectorStore provider contracts | FND-002 | PLANNED |
 | FND-004 | P0 | Provider composition/single-active-provider selection | FND-003 | PLANNED |
@@ -34,6 +34,8 @@ Priorities: `P0` foundation/blocker, `P1` V1 capability, `P2` production hardeni
 | FND-007 | P0 | Development embedding adapter + ADR-006 compatibility integration | FND-003, FND-006 | PLANNED |
 | FND-008 | P0 | Qwen/LM Studio OpenAI-compatible LLM adapter correctness | FND-003, FND-004 | PLANNED |
 | FND-009 | P1 | Foundation integration/composition test harness | FND-006–FND-008 | PLANNED |
+
+**Authorization:** FND-001 is `READY` and AUTHORIZED FOR IMPLEMENTATION. FND-002 and all later tasks remain non-executable until separately promoted under the task-promotion checklist.
 
 ### FND-001 — Configuration/Startup Validation
 
