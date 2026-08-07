@@ -16,7 +16,7 @@ The platform is being built for long-term maintainability, provider independence
 | Development LLM | Local Qwen 3.6 through LM Studio |
 | Production LLM | AWS Bedrock models |
 | Production embeddings | AWS Bedrock embedding models |
-| Runtime hardening | In progress |
+| Runtime hardening | FND-001 authorized |
 | Current first task | FND-001: configuration and startup validation |
 | Production readiness | Not yet reached |
 
@@ -181,7 +181,7 @@ Future providers may be added through new adapters and composition configuration
 
 ### Programming language
 
-- CPython 3.14.x only (>=3.14,<3.15)
+- CPython 3.14.7 only
 
 ### API framework
 
@@ -291,7 +291,7 @@ curl -X POST http://localhost:8000/retrieve \
 
 ### Prerequisites
 
-- CPython 3.14.x only (>=3.14,<3.15);
+- CPython 3.14.7 only;
 - Git;
 - a reachable Qdrant deployment: Qdrant Cloud or self-hosted Qdrant;
 - LM Studio running on the development PC for local Qwen inference; and
@@ -360,7 +360,7 @@ application or repository layer.
 uvicorn app.main:app --reload
 ```
 
-The current baseline is undergoing startup/configuration hardening. If startup fails before FND-001 is accepted, record the failure and follow the active task instructions rather than applying unrelated fixes.
+The current baseline is undergoing startup/configuration hardening. FND-001 is the only authorized implementation task. Follow CL-001 exactly, record any startup failure, and do not apply unrelated fixes.
 
 ### Run tests
 

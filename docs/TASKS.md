@@ -3,7 +3,7 @@
 **Status:** ACCEPTED PLANNING BASELINE  
 **Version:** 1.0  
 **Last Updated:** 2026-08-07  
-**Implementation State:** BLOCKED — governance correction required before FND-001
+**Implementation State:** AUTHORIZED — FND-001 only
 
 ## 1. Purpose
 
@@ -25,7 +25,7 @@ Priorities: `P0` foundation/blocker, `P1` V1 capability, `P2` production hardeni
 
 | ID | Priority | Task | Depends On | Status |
 | --- | --- | --- | --- | --- |
-| FND-001 | P0 | Configuration/startup validation boundary | governance correction complete | BLOCKED_GOVERNANCE_CORRECTION |
+| FND-001 | P0 | Configuration/startup validation boundary | governance correction complete | READY |
 | FND-002 | P0 | Platform error taxonomy and safe boundary errors | FND-001 | PLANNED |
 | FND-003 | P0 | Normalize async LLM/Embedding/VectorStore provider contracts | FND-002 | PLANNED |
 | FND-004 | P0 | Provider composition/single-active-provider selection | FND-003 | PLANNED |
