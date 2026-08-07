@@ -141,7 +141,7 @@ The approved direction is:
 
 | Concern | Development | Production |
 | --- | --- | --- |
-| Programming language/runtime | Python 3.14+ | Python 3.14+ |
+| Programming language/runtime | CPython 3.14.7 only | CPython 3.14.7 only |
 | Framework | FastAPI + Pydantic | FastAPI + Pydantic |
 | Agent framework | LangGraph — orchestration only | LangGraph — orchestration only |
 | LLM Provider | Local Qwen 3.6 through LM Studio's OpenAI-compatible endpoint | AWS Bedrock models |

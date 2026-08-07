@@ -2,7 +2,7 @@
 
 #
 
-# Python support: CPython 3.14.x only (>=3.14,<3.15)
+# Python support: CPython 3.14.7 only
 
 #
 
