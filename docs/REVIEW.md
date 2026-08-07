@@ -1,9 +1,9 @@
 # Enterprise AI Platform — Engineering Review Record
 
-**Status:** OWNER ACCEPTED — PHASE 1 IMPLEMENTATION ENTRY APPROVED  
+**Status:** OWNER ACCEPTED — PRE-CODE GATES REQUIRE CORRECTION  
 **Version:** 1.0  
 **Last Updated:** 2026-08-07  
-**Implementation:** AUTHORIZED — FND-001 only
+**Implementation:** BLOCKED — FND-001 pending governance correction
 
 ## 1. Review Purpose
 
@@ -35,7 +35,13 @@ Complete/accepted:
 - `TASKS.md`;
 - `PROMPTS.md` controlled first draft.
 
-This is sufficient governance to begin **scoped foundation hardening**. Owner implementation-entry acceptance was recorded on 2026-08-07.
+The governance set is structurally complete, but implementation entry is temporarily blocked until dependency syntax, documentation paths, and strict Python runtime wording are corrected and revalidated.
+
+Blocking gate failures:
+
+1. `requirements.txt` must contain valid requirement lines without trailing continuation characters.
+2. `PROMPTS.md` must reference the repository's `docs/` paths so the implementation engineer can locate the governing documents.
+3. Runtime documentation and prompt constraints must consistently state CPython 3.14.x only (`>=3.14,<3.15`).
 
 ## 4. Key Implementation Findings Still Open
 
@@ -83,12 +89,12 @@ No implementation task may silently choose these decisions.
 
 ## 7. Implementation-Entry Recommendation
 
-**Decision: APPROVED by the project owner for Phase 1 Runtime Foundation Hardening, beginning with FND-001 only.**
+**Decision: NOT YET APPROVED — governance corrections must be pushed and revalidated before FND-001.**
 
 The controlled execution sequence is:
 
-- FND-001 is promoted to `READY`;
-- CL-001 is `ARCHITECT_APPROVED/EXECUTABLE`;
+- FND-001 remains blocked until the correction gate passes;
+- CL-001 remains blocked until the governance correction is revalidated;
 - run only CL-001 in Cline;
 - return the diff/test output for senior-engineer review;
 - do not generate/execute CL-002 until FND-001 review is accepted.
@@ -106,9 +112,9 @@ This recommendation does **not** authorize LangGraph, feature expansion, product
 | Security/testing/API/observability standards defined | PASS |
 | ADR deferrals explicit | PASS |
 | Phase roadmap/task dependencies defined | PASS |
-| First Cline prompt narrowly scoped | PASS — ARCHITECT_APPROVED |
+| First Cline prompt narrowly scoped | PASS — pending governance gate |
 | Current code production-ready | FAIL — expected; hardening required |
-| Implementation authorized by owner | PASS — FND-001 only |
+| Implementation authorized by owner | BLOCKED — governance correction required |
 
 ## 9. Review Discipline After Entry
 
@@ -124,4 +130,4 @@ For every task:
 
 ## 10. Final Pre-Implementation State
 
-The project is now architecturally/documentationally prepared for controlled implementation hardening. The correct next action is **not** to generate the whole V1 platform. It is to accept the implementation-entry recommendation and then execute FND-001 only.
+The project is architecturally prepared, but implementation entry remains blocked until the governance corrections are pushed and revalidated. After that gate passes, the next action is to execute FND-001 only.
