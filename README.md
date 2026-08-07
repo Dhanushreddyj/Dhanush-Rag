@@ -181,7 +181,7 @@ Future providers may be added through new adapters and composition configuration
 
 ### Programming language
 
-- Python 3.14+
+- CPython 3.14.x only (>=3.14,<3.15)
 
 ### API framework
 
@@ -291,7 +291,7 @@ curl -X POST http://localhost:8000/retrieve \
 
 ### Prerequisites
 
-- Python 3.14 or newer;
+- CPython 3.14.x only (>=3.14,<3.15);
 - Git;
 - a reachable Qdrant deployment: Qdrant Cloud or self-hosted Qdrant;
 - LM Studio running on the development PC for local Qwen inference; and
