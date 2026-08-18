@@ -1,11 +1,11 @@
 # MASTER_CONTEXT.md
 
-**Version:** 1.7  
-**Status:** ACTIVE  
-**Project:** Enterprise AI Platform for Real Estate  
-**Owner:** Dhanush Reddy  
-**Primary Architect:** ChatGPT (Principal AI Architect)  
-**Implementation Engineer:** Cline (Local Qwen 3.6)  
+**Version:** 2.0
+**Status:** PROPOSED REQUIREMENTS ALIGNMENT
+**Project:** Enterprise AI Platform for Real Estate
+**Owner:** Dhanush Reddy
+**Primary Architect:** ChatGPT (Principal AI Architect)
+**Implementation Engineer:** Cline (Local Qwen 3.6)
 **Repository:** https://github.com/Dhanushreddyj/Dhanush-Rag.git
 
 ## 1. Project Mission
@@ -13,6 +13,21 @@
 Build a production-grade Enterprise AI Platform for a worldwide real estate platform.
 
 The Python service is an independent AI microservice that integrates with an existing Next.js backend. The goal is not to build a chatbot or a simple RAG demo. Agentic RAG is the first production capability of a platform intended to support additional real estate AI capabilities without major architectural redesign.
+
+## 1.1 Authoritative Nofeez Requirement
+
+The August 2026 Nofeez RAG implementation instruction is now a governing product requirement. V1 must implement a knowledge and orchestration layer over 110 approved canonical Markdown modules.
+
+The required semantic boundary is:
+
+- RAG = what Nofeez means;
+- live domain APIs = what is true now;
+- model services = what Nofeez estimates or predicts;
+- transactional tools = what Nofeez changes;
+- permission policy = what the caller may know or do;
+- events, versioning and reconciliation = how derived knowledge remains synchronized.
+
+The LLM is never a source of truth.
 
 ## 2. Repository Responsibility
 
@@ -32,9 +47,13 @@ The existing backend consumes the Python service through explicit APIs. The Pyth
 
 The V1 target includes the foundations required for:
 
-- document ingestion;
+- canonical Markdown repository and YAML metadata validation;
+- semantic heading-aware chunking with parent context and stable chunk identity;
+- content hashing, document versions, incremental indexing and reconciliation;
 - embeddings;
-- vector storage and retrieval;
+- Qdrant dense/sparse hybrid retrieval, metadata filtering and reranking;
+- intent/entity routing across RAG, live data, model and action paths;
+- permission-aware retrieval and separated public/private namespaces;
 - grounded responses and verified source/citation mapping;
 - streaming end to end;
 - provider abstraction;
@@ -46,7 +65,7 @@ The V1 target includes the foundations required for:
 - response construction;
 - typed errors and configuration;
 - security and observability;
-- automated testing and AI evaluation.
+- automated testing and AI evaluation, including routing, privacy, hallucination and source-traceability gates.
 
 This list is the **target product scope**, not a claim that every item is already complete in the current repository.
 
@@ -244,10 +263,10 @@ Owns product direction and final decision authority.
 - `ARCHITECTURE.md`: ACCEPTED v1.3.
 - Initial ADR set: complete for the currently decidable architecture. ADR-001 through ADR-008 are ACCEPTED; ADR-009 through ADR-011 explicitly defer authentication/trust mechanism, telemetry-stack selection, and deployment/runtime topology until their production decision inputs exist.
 - Engineering standards: `CODE_STYLE.md`, `CONTRIBUTING.md`, `TESTING.md`, `SECURITY.md`, `API_GUIDELINES.md`, and `OBSERVABILITY.md` are ACCEPTED v1.0.
-- Implementation entry: ACCEPTED by the project owner on 2026-08-07 for Phase 1 Runtime Foundation Hardening.
-- Authorized first implementation scope: FND-001 configuration/startup validation only; CL-001 is the only executable Cline prompt.
-- Subsequent prompts/tasks remain blocked until FND-001 implementation, tests, and senior-engineer diff review are accepted.
+- Previous implementation entry for FND-001 is suspended pending acceptance of the 110-module Nofeez requirements alignment.
+- No Cline implementation prompt is executable while this governance change is under review.
+- Local uncommitted FND-001 work must be preserved but not merged until the revised task sequence and prompt are accepted.
 
 ## 17. Long-Term Goal
 
-Build an enterprise-grade AI Platform for Real Estate whose first production capability is Agentic RAG, whose architecture supports future AI products without significant redesign, and whose engineering quality is suitable for professional teams and worldwide production operation.
+Build the Nofeez enterprise AI knowledge and orchestration platform: canonical RAG for stable meaning, authorized live context for current truth, model services for estimates, transactional tools for changes, and synchronization controls that remain safe at worldwide scale.

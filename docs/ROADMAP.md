@@ -1,168 +1,136 @@
-# Enterprise AI Platform — Engineering Roadmap
+# Nofeez AI Platform — Engineering Roadmap
 
-**Status:** ACCEPTED  
-**Version:** 1.0  
-**Last Updated:** 2026-08-07  
-**Scope:** Python AI microservice; V1 production-grade Agentic RAG foundation
+**Status:** PROPOSED REQUIREMENTS ALIGNMENT
+**Version:** 2.0
+**Last Updated:** 2026-08-18
+**Scope:** Python AI microservice and Nofeez knowledge/orchestration layer
 
 ## 1. Purpose
 
-This roadmap sequences engineering work without redesigning the accepted architecture. It is capability/dependency driven, not date driven. `TASKS.md` owns executable task detail; this document owns phase order and exit gates.
+This roadmap aligns the accepted clean architecture with the authoritative Nofeez RAG implementation requirements for 110 canonical Markdown modules. It is dependency-driven, not date-driven. TASKS.md owns executable detail.
 
 ## 2. Roadmap Rules
 
-- architecture/ADRs precede material implementation decisions;
-- each implementation task has one logical scope and required tests;
-- stabilize lower-level contracts before building higher-level orchestration;
-- do not introduce future capabilities/providers/infrastructure speculatively;
-- production readiness requires tests, security, observability, evaluation, and operational evidence—not a local demo;
-- deferred ADRs block only work that requires those specific decisions, not unrelated foundation hardening.
+- no implementation runs until its governing ADRs and task are accepted;
+- canonical sources are never silently rewritten by ingestion;
+- route selection precedes retrieval or tool execution;
+- permission filtering precedes LLM context exposure;
+- RAG describes stable meaning, live services provide current truth, model services produce labeled estimates, and tools perform authorized changes;
+- Qdrant remains the sole V1 vector database and must support the approved hybrid retrieval contract;
+- every phase includes deterministic tests and traceability;
+- implementation proceeds through small reviewed tasks.
 
-## 3. Phase 0 — Architecture and Governance Foundation
+## 3. Phase 0A — Requirements and Governance Alignment
 
-**Status: COMPLETE**
+**Status: IN REVIEW**
 
-Delivered:
+Deliver:
 
-- repository baseline audit and implementation gap map;
-- `MASTER_CONTEXT.md`, `PROJECT_VISION.md`, `ARCHITECTURE.md`;
-- ADR-001 through ADR-008 accepted;
-- ADR-009 through ADR-011 explicitly deferred with decision triggers;
-- `CODE_STYLE.md`, `CONTRIBUTING.md`, `TESTING.md`, `SECURITY.md`, `API_GUIDELINES.md`, `OBSERVABILITY.md`;
-- execution planning documents and implementation-entry review package.
+- authoritative Markdown copy of the 66-part Nofeez instruction;
+- requirements traceability matrix;
+- updated master context, vision, architecture, roadmap, tasks, prompts and review record;
+- ADR-012 through ADR-018;
+- explicit suspension of old implementation authorization.
 
-Exit condition: a senior engineer can identify service boundary, dependency direction, provider strategy, Qdrant/index strategy, streaming/session semantics, testing/security/observability expectations, and deferred production decisions without verbal handover.
+Exit gate:
 
-## 4. Phase 1 — Runtime Foundation Hardening
+- no contradiction remains about canonical sources, routing, hybrid retrieval, permissions, incremental indexing, reconciliation or evaluation;
+- Qdrant/OpenSearch interpretation is explicit;
+- revised task dependencies are accepted;
+- one implementation prompt is promoted explicitly.
 
-**Goal:** create a correct, testable foundation before adding/expanding Agentic RAG components.
-
-Sequence:
-
-1. configuration/startup validation;
-2. platform error taxonomy/translation contracts;
-3. LLM/embedding/vector-store provider contract normalization, async-first;
-4. controlled provider composition/single-active-provider selection;
-5. remove legacy Chroma runtime/dependency/configuration paths;
-6. harden Qdrant adapter and collection/index compatibility behavior;
-7. harden development embedding path behind the contract;
-8. harden local Qwen/LM Studio LLM adapter path;
-9. establish provider/unit/contract/integration test baseline.
-
-### Phase 1 Exit Gate
-
-- application imports/startup configuration validate predictably;
-- no approved runtime Chroma path remains;
-- Qdrant is the sole V1 vector-store adapter;
-- provider contracts are async-safe/provider-neutral;
-- configuration/composition selects one implementation per capability;
-- application code does not require provider SDK types;
-- deterministic foundation tests pass without production credentials;
-- local provider/Qdrant integrations have explicit integration-test paths.
-
-## 5. Phase 2 — Owned RAG Application Components
-
-**Goal:** establish the modular RAG capabilities that LangGraph will later orchestrate.
+## 4. Phase 1 — Runtime Foundation
 
 Sequence:
 
-1. Prompt Builder and prompt ownership/version semantics;
-2. Retriever pipeline and provider-neutral retrieval result/context selection;
-3. Response Builder and citation validation/assembly;
-4. Session Manager contract and V1 conversation-scoped policy (persistence backend still deferred);
-5. ingestion service hardening with async Qdrant/embedding integration and source/chunk identity;
-6. RAG application service orchestration over these components;
-7. deterministic unit/integration tests and controlled RAG evaluation cases.
+1. typed configuration/startup validation;
+2. platform error taxonomy;
+3. async provider contracts;
+4. controlled provider composition;
+5. legacy Chroma removal;
+6. Qdrant dense/sparse index compatibility foundation;
+7. development embedding adapter;
+8. LM Studio/Qwen development LLM adapter;
+9. deterministic foundation test harness.
 
-### Phase 2 Exit Gate
+Exit gate: startup is deterministic, provider SDKs do not leak, Qdrant is the only runtime vector store, and foundation tests need no production credentials.
 
-- Prompt Builder owns prompts;
-- Retriever owns retrieval/context policy;
-- Response Builder owns citations/response construction;
-- Session Manager owns session policy;
-- RAG service orchestrates instead of implementing all internals;
-- provider SDK/Qdrant/FastAPI/LangGraph types do not leak into application contracts;
-- ingestion/retrieval/citation identity is end-to-end testable;
-- insufficient-context behavior has regression coverage.
-
-## 6. Phase 3 — Delivery, Streaming, and Agentic RAG
-
-**Goal:** expose stable application capabilities and introduce orchestration only after their contracts are reliable.
+## 5. Phase 2 — Canonical Knowledge Foundation
 
 Sequence:
 
-1. thin FastAPI controllers and dependency injection/composition boundary;
-2. stable API error envelope and `/v1` capability contract migration plan;
-3. provider-neutral application stream-event model;
-4. SSE transport per ADR-008/API guidelines;
-5. minimal controlled Tool Registry required by V1 orchestration;
-6. LangGraph Agentic RAG graph over already-tested application operations;
-7. API/SSE/graph routing tests.
+1. canonical repository and source discovery contract;
+2. YAML metadata parser and schema validator;
+3. Markdown heading/numbered-section parser;
+4. forbidden-content and duplicate-ID validation queue;
+5. semantic chunker with parent context;
+6. deterministic document/chunk IDs and SHA-256 hashes;
+7. document/version registry with ACTIVE, SUPERSEDED, ARCHIVED and DRAFT states;
+8. changed-section detection and incremental embedding;
+9. Qdrant payload/index schema and version filters.
 
-### Phase 3 Exit Gate
+Exit gate: all 110 supplied canonical modules parse successfully; invalid files do not index; unchanged chunks do not re-embed; changed sections replace only affected active chunks.
 
-- controllers contain transport logic only;
-- SSE uses `start/delta/citation/metadata/error/done` platform events;
-- cancellation/error/completion behavior is testable;
-- LangGraph nodes are thin orchestration adapters;
-- graph state contains platform-owned types, not provider SDK objects;
-- RAG capabilities remain usable/testable without LangGraph.
+## 6. Phase 3 — Retrieval, Routing and Authorization
 
-## 7. Phase 4 — Production Hardening and Evaluation
+Sequence:
 
-**Goal:** establish operational confidence for a production candidate without prematurely selecting deferred infrastructure.
+1. Nofeez intent registry;
+2. entity resolver and hierarchy models;
+3. stable/live/model/action query classifier;
+4. domain route contract;
+5. dense + sparse/keyword retrieval;
+6. metadata filters;
+7. reranker;
+8. confidence gate and controlled query expansion;
+9. role, market, tenant and namespace filters;
+10. context deduplication/compression and source precedence.
 
-Work includes:
+Exit gate: route accuracy, retrieval quality and permission isolation meet approved evaluation gates; dynamic-state questions never rely on static RAG alone.
 
-- structured logging/correlation/redaction;
-- liveness/readiness and bounded dependency checks;
-- timeout/retry/cancellation hardening;
-- concurrency/multi-worker correctness review;
-- cache/rate-state review (no accidental process-local production semantics);
-- Bedrock production provider contract/integration validation once exact approved model configuration is available;
-- Qdrant production index/compatibility/migration validation;
-- security verification and prompt-injection/tool boundary tests;
-- curated AI evaluation baseline for retrieval, groundedness, faithfulness, citations, insufficient-context behavior, hallucination, and latency;
-- representative load/performance measurements against architecture budgets.
+## 7. Phase 4 — Nofi Context and Response
 
-### Phase 4 Exit Gate
+Sequence:
 
-- no raw provider errors/secrets/sensitive content leak through APIs/logging;
-- production provider/index configurations are validated;
-- evaluation baseline/report exists;
-- performance distributions are measured under representative conditions;
-- readiness reflects actual dependencies;
-- known production blockers are explicit.
+1. Prompt Builder and trusted/untrusted context separation;
+2. Nofi structured Context Builder;
+3. Response Builder and citation validation;
+4. UNKNOWN and CURRENT_STATE_UNAVAILABLE fallbacks;
+5. fact/estimate/prediction/recommendation labeling;
+6. conflict detection;
+7. live domain/model/tool contracts;
+8. LangGraph orchestration over tested application capabilities;
+9. SSE delivery and session-scoped context where approved.
 
-## 8. Phase 5 — Production Deployment Readiness
+Exit gate: every material claim is traceable; unsupported property, price, payment, inventory and legal data is never fabricated; live-service failure does not fall back to stale RAG.
 
-**Goal:** promote infrastructure-dependent decisions only when real production inputs exist.
+## 8. Phase 5 — Synchronization and Operations
 
-Required before production release:
+Sequence:
 
-- ADR-009 promoted: Next.js-to-Python authentication/trust mechanism;
-- ADR-010 promoted: production telemetry/export/alerting stack;
-- ADR-011 promoted: deployment/runtime topology;
-- session persistence ADR promoted if production continuity semantics require it;
-- secrets/network/ingress/scaling/runbook decisions aligned with topology;
-- release/API compatibility and rollback plan;
-- production smoke/readiness/evaluation gates.
+1. Git/CI or approved source-change trigger;
+2. parse/validate/diff/rechunk/re-embed/upsert pipeline;
+3. superseded-chunk cleanup;
+4. event-driven cache invalidation contracts;
+5. scheduled reconciliation;
+6. ingestion status and index-health APIs;
+7. conflict and failed-validation queues;
+8. structured retrieval and routing telemetry;
+9. admin diagnostics APIs for the existing backend/UI.
 
-This phase is intentionally blocked on operational requirements rather than guessed today.
+Exit gate: changed knowledge becomes active automatically, deleted/superseded content is not retrievable, and reconciliation detects and repairs safe derived-state drift.
 
-## 9. Post-V1 Capability Expansion
+## 9. Phase 6 — Evaluation and Production Readiness
 
-After V1 is production-proven, roadmap candidates include property search, recommendations, CRM assistance, investment analysis, image search, scheduling, market analytics, and document intelligence.
+Deliver:
 
-Each enters through typed application capabilities/tools and only receives LangGraph routing/provider adapters when the requirement needs them. Roadmap presence does not authorize implementation.
+- 300–500 golden questions across product, cross-module, dynamic-state, privacy, ambiguity, multilingual and hallucination-trap categories;
+- route, retrieval, reranking, groundedness, citation and permission tests;
+- zero fabricated inventory, payment state and legal rules;
+- zero permission leakage;
+- representative latency and failure measurements;
+- authentication, telemetry, deployment and secrets decisions required by production.
 
-## 10. Explicit Non-Goals
+## 10. Post-V1
 
-The roadmap does not authorize:
-
-- ChromaDB;
-- multi-provider runtime routing/fan-out;
-- persistent long-term user memory in V1;
-- a telemetry/deployment/auth technology before its deferred ADR is promoted;
-- repository-wide cosmetic rewrites;
-- building future real-estate AI products before the V1 foundation is stable.
+Future work may include verified translations, project/developer document namespaces, media extraction workflows, knowledge-graph enrichment, recommendations and other AI capabilities. None may bypass canonical-source, authorization, provenance or live-state boundaries.

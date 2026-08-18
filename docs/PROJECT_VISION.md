@@ -1,9 +1,9 @@
 # Enterprise AI Platform for Real Estate — Project Vision
 
-**Status:** ACCEPTED  
-**Version:** 1.2  
-**Last Updated:** 2026-08-07  
-**Initial Capability:** Agentic RAG  
+**Status:** PROPOSED REQUIREMENTS ALIGNMENT
+**Version:** 2.0
+**Last Updated:** 2026-08-18
+**Initial Capability:** Agentic RAG
 **Service Boundary:** Python AI Microservice
 
 ## 1. Purpose
@@ -60,6 +60,19 @@ The goal is not merely to retrieve vector matches and send them to an LLM. V1 mu
 LangGraph is used for agent orchestration only. Domain logic, retrieval logic, provider logic, prompt construction, validation, and other application behavior must remain independently testable and must not become inseparable from the orchestration framework.
 
 V1 is successful when the existing Next.js backend can consume a stable Python AI API that provides dependable, traceable, grounded RAG behavior and creates a sound foundation for future real estate agents and tools.
+
+## 5.1 Nofeez Knowledge and Truth Boundary
+
+Version 1 must preserve four different kinds of information:
+
+1. Stable canonical knowledge, answered through RAG.
+2. Dynamic domain state, obtained from authoritative live services.
+3. Estimates and predictions, produced by approved model services and labeled accordingly.
+4. Transactional state changes, executed only through authorized tools.
+
+The 110 approved Markdown modules are canonical Nofeez knowledge sources. They must be parsed by YAML metadata, semantically chunked, versioned, hashed, traced and indexed without silent source mutation.
+
+A query router must select the source class before retrieval or tool execution. Permission filters apply before restricted context reaches the LLM. The platform must prefer UNKNOWN or CURRENT_STATE_UNAVAILABLE over unsupported claims.
 
 ## 6. System Boundary
 
@@ -159,10 +172,10 @@ Provider selection is configuration-driven. Exactly one implementation per provi
 V1 should leave the organization with more than a working `/query` endpoint. It should establish:
 
 1. a stable AI service boundary for the existing Next.js backend;
-2. a dependable ingestion and retrieval foundation;
-3. grounded response generation with source attribution;
+2. a dependable canonical Markdown ingestion, validation, versioning and incremental-index foundation;
+3. grounded response generation with source attribution and explicit stable/live/model/action routing;
 4. provider contracts for LLM, embeddings, and vector storage;
-5. Qdrant support for both development and production behind the platform vector-store contract;
+5. Qdrant dense/sparse hybrid retrieval for both development and production behind the platform vector-store contract;
 6. controlled prompt construction and prompt lifecycle practices;
 7. LangGraph-based agent orchestration with application logic outside the graph;
 8. session/memory behavior where required by the approved V1 architecture;
@@ -170,7 +183,9 @@ V1 should leave the organization with more than a working `/query` endpoint. It 
 10. typed configuration, validation, errors, and API contracts;
 11. meaningful automated tests across architectural boundaries;
 12. security and observability foundations suitable for production operation;
-13. engineering documentation that keeps future human and AI contributors aligned.
+13. permission-aware context assembly and isolation of public, developer/project and private namespaces;
+14. reconciliation and conflict detection for documents, chunks and indexes;
+15. engineering documentation that keeps future human and AI contributors aligned.
 
 ## 11. Explicit Non-Goals
 

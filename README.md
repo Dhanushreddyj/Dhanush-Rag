@@ -16,8 +16,8 @@ The platform is being built for long-term maintainability, provider independence
 | Development LLM | Local Qwen 3.6 through LM Studio |
 | Production LLM | AWS Bedrock models |
 | Production embeddings | AWS Bedrock embedding models |
-| Runtime hardening | FND-001 authorized |
-| Current first task | FND-001: configuration and startup validation |
+| Requirements alignment | In progress — 110-module Nofeez knowledge system |
+| Implementation authorization | Suspended pending governance acceptance |
 | Production readiness | Not yet reached |
 
 The accepted architecture is ahead of the current implementation. Work is intentionally delivered as small, reviewable tasks rather than as a project-wide rewrite.
@@ -26,8 +26,9 @@ The accepted architecture is ahead of the current implementation. Work is intent
 
 Version 1 is designed to provide:
 
-- PDF and document ingestion;
-- document loading, chunking, and metadata preservation;
+- canonical Markdown knowledge ingestion for the 110 approved Nofeez modules;
+- YAML metadata parsing, document validation, semantic heading-aware chunking, stable identity, hashing and version preservation;
+- controlled PDF/project-document extraction as a separately classified source path;
 - embedding generation;
 - Qdrant vector persistence and retrieval;
 - grounded answer generation;
@@ -39,6 +40,19 @@ Version 1 is designed to provide:
 - LangGraph orchestration for Agentic RAG workflows.
 
 The platform is not intended to be a simple chatbot or a framework demonstration. It is an extensible AI service whose first capability is RAG.
+
+## Authoritative Nofeez knowledge model
+
+V1 is a knowledge and orchestration layer, not a chatbot over files:
+
+- RAG explains stable Nofeez product and business semantics.
+- Live domain APIs provide current property, inventory, price, payment, compliance and user state.
+- Model services provide estimates and predictions.
+- Transaction tools perform authorized state changes.
+- Permission filters determine what the current caller may retrieve before context reaches the LLM.
+- Events, incremental indexing and reconciliation keep derived indexes synchronized with canonical sources.
+
+The 110 approved Markdown modules are canonical sources. They are read, validated, versioned, indexed and archived; ingestion must never silently rewrite them.
 
 ## Service boundary
 
@@ -127,10 +141,12 @@ Documents are converted into stable, traceable chunks before being written to Qd
 
 ```mermaid
 flowchart TD
-    Source["PDF or supported document"] --> Loader["Document loader"]
-    Loader --> Chunker["Chunking and metadata"]
-    Chunker --> Embed["Embedding provider"]
-    Embed --> Qdrant["Qdrant collection"]
+    Source["Canonical Markdown"] --> Parse["YAML + heading parser"]
+    Parse --> Validate["Schema + policy validation"]
+    Validate --> Chunk["Semantic chunks + parent context"]
+    Chunk --> Hash["Stable IDs + SHA-256 diff"]
+    Hash --> Embed["Embed changed chunks only"]
+    Embed --> Qdrant["Qdrant dense + sparse indexes"]
 ```
 
 Ingestion must preserve document identity, chunk identity, source metadata, embedding compatibility, and enough information to produce reliable citations.
@@ -360,7 +376,7 @@ application or repository layer.
 uvicorn app.main:app --reload
 ```
 
-The current baseline is undergoing startup/configuration hardening. FND-001 is the only authorized implementation task. Follow CL-001 exactly, record any startup failure, and do not apply unrelated fixes.
+The implementation queue is suspended while the 110-module Nofeez requirements are aligned with the architecture, ADRs, roadmap and controlled prompts. Do not execute CL-001 or later implementation prompts until the governance gate is explicitly accepted.
 
 ### Run tests
 
@@ -451,7 +467,10 @@ The project must never:
 - use globals for request or session state;
 - expose raw exception text to API consumers;
 - introduce circular dependencies; or
-- redesign the architecture during an isolated implementation task.
+- redesign the architecture during an isolated implementation task;
+- answer current property, inventory, price, payment, compliance or user-state questions from static RAG alone;
+- expose restricted content to the LLM before permission filtering; or
+- treat user conversations or unverified uploaded content as canonical knowledge.
 
 ## Roadmap
 
