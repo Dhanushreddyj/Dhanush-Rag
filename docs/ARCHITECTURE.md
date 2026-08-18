@@ -1,10 +1,10 @@
 # Enterprise AI Platform for Real Estate — Architecture Specification
 
-**Status:** ACCEPTED  
-**Version:** 1.3  
-**Last Updated:** 2026-08-07  
-**Owner:** Dhanush Reddy  
-**Primary Architecture Role:** Principal AI Architect  
+**Status:** PROPOSED REQUIREMENTS ALIGNMENT
+**Version:** 2.0
+**Last Updated:** 2026-08-18
+**Owner:** Dhanush Reddy
+**Primary Architecture Role:** Principal AI Architect
 **Initial Production Capability:** Agentic RAG
 
 ## 1. Purpose and Authority
@@ -41,8 +41,9 @@ This specification covers:
 - provider and repository contracts;
 - LLM and embedding integration;
 - vector storage;
-- document ingestion;
-- retrieval and reranking;
+- canonical Markdown ingestion, validation, versioning and reconciliation;
+- knowledge classification and pre-retrieval routing;
+- hybrid retrieval, permission filtering and reranking;
 - prompt construction;
 - response construction and citations;
 - session memory;
@@ -301,9 +302,13 @@ The ingestion workflow owns:
 
 The vector-store provider must not own document loading or chunking policy.
 
-### 13.2 Idempotency and Identity
+### 13.2 Canonical Identity, Versioning and Incremental Indexing
 
-Production ingestion must not rely solely on a new random document ID on every run. The design must define how a source document is recognized, replaced, versioned, or re-indexed. The precise identity/version policy will be captured before production ingestion is finalized.
+Canonical Markdown documents use stable document IDs from validated YAML metadata. Every document and chunk carries a version, status, content hash, parser/chunker/embedding compatibility identity, source path and indexing timestamps.
+
+Ingestion compares section and chunk hashes. Unchanged chunks are not re-embedded. Changed sections create deterministic replacement chunks, superseded chunks are removed from active retrieval, and previous document versions are archived rather than silently destroyed.
+
+A reconciliation job compares canonical sources, the document registry, chunk records and Qdrant indexes to detect missing, duplicate, stale, orphaned or wrongly versioned derived state.
 
 ### 13.3 Partial Failure
 
@@ -332,7 +337,23 @@ The pipeline must allow reranking to be introduced behind an interface without c
 
 ### 14.2 Hybrid Search
 
-Hybrid search is lower priority. It must not be prematurely embedded into V1 provider contracts unless an accepted requirement/ADR promotes it.
+Hybrid retrieval is mandatory for the Nofeez V1 knowledge system. The Retriever coordinates dense semantic search, sparse/keyword retrieval, provider-neutral metadata filters and reranking. Qdrant remains the sole V1 vector database; OpenSearch examples in the source requirements are conditional and do not authorize a second storage implementation.
+
+The retrieval pipeline normally produces 20–30 bounded candidates, reranks to 5–10 context chunks, applies permission policy before model context construction, and enforces an evaluation-tuned confidence gate.
+
+## 14.3 Knowledge Classification and Router
+
+Every request is classified before retrieval into a platform-owned route and domain target. The minimum source classes are STATIC_KNOWLEDGE, DYNAMIC_DOMAIN_DATA, MODEL_OUTPUT and TRANSACTIONAL_STATE.
+
+The router distinguishes questions such as “What does AVAILABLE mean?” from “Is unit 1402 available now?”. The former may use canonical RAG; the latter requires the inventory service. RAG must never substitute for an unavailable live source.
+
+Route and intent models are provider-neutral application contracts. LangGraph may orchestrate them later, but routing policy remains independently testable.
+
+## 14.4 Permission-Aware Retrieval and Namespaces
+
+Authorization filters are applied before restricted content reaches the LLM. Global canonical knowledge, developer/project knowledge and private user context are separate namespaces with explicit market, role, tenant and ownership filters.
+
+Private profiles, contact data, search history, payment data, consent, fraud signals, lead information and internal negotiation context are assembled from authorized live/private services at request time; they do not enter the global RAG corpus.
 
 ## 15. Prompt Builder
 
@@ -763,6 +784,14 @@ The initial ADR set is tracked as follows:
 10. production telemetry stack — **DEFERRED, ADR-010** pending deployment/operations requirements;
 11. deployment/runtime topology — **DEFERRED, ADR-011** pending production operational requirements.
 
+12. canonical Nofeez knowledge source and lifecycle — **PROPOSED, ADR-012**;
+13. stable/live/model/action classification and query routing — **PROPOSED, ADR-013**;
+14. Qdrant hybrid retrieval and reranking — **PROPOSED, ADR-014**;
+15. permission-aware knowledge namespaces and context assembly — **PROPOSED, ADR-015**;
+16. incremental indexing and reconciliation — **PROPOSED, ADR-016**;
+17. source precedence, grounding and conflict handling — **PROPOSED, ADR-017**;
+18. AI evaluation and release gates — **PROPOSED, ADR-018**.
+
 An ADR should record context, decision, alternatives considered, consequences, status, and supersession relationships.
 
 ## 39. Architecture Review Checklist
@@ -808,6 +837,10 @@ The following rules are the short form of this specification and must remain tru
 18. Important architecture changes are recorded as ADRs.
 19. AI-assisted implementation must not silently redesign the architecture.
 20. Production quality is established through tests, security, observability, and operational behavior—not by successful demos alone.
+21. Static RAG never represents current inventory, price, payment, compliance or user state.
+22. Permission filtering occurs before restricted context reaches the LLM.
+23. Canonical source changes propagate through hashing, incremental indexing, supersession and reconciliation.
+24. Unsupported answers return UNKNOWN or an explicit unavailable-state result rather than fabricated truth.
 
 ## 41. Runtime Request Lifecycle
 

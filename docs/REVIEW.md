@@ -1,133 +1,81 @@
-# Enterprise AI Platform — Engineering Review Record
+# Nofeez AI Platform — Engineering Review Record
 
-**Status:** OWNER ACCEPTED — PHASE 1 IMPLEMENTATION ENTRY APPROVED
-**Version:** 1.0
-**Last Updated:** 2026-08-07
-**Implementation:** AUTHORIZED — FND-001 only
+**Status:** REQUIREMENTS REALIGNMENT IN REVIEW
+**Version:** 2.0
+**Last Updated:** 2026-08-18
+**Implementation:** SUSPENDED
 
-## 1. Review Purpose
+## 1. Review Trigger
 
-This record captures the pre-implementation architecture/engineering review and defines what is approved to happen next. It distinguishes documentation readiness from implementation/runtime readiness.
+The project owner supplied the authoritative “Nofeez RAG Implementation Instructions for Intern,” containing 66 requirements for a knowledge and orchestration layer over 110 canonical Markdown modules.
 
-## 2. Reviewed Baseline
+The previous review accepted a generic production Agentic RAG foundation and authorized FND-001. The new requirement does not invalidate the clean architecture, provider boundaries, Qdrant decision or runtime foundation; it changes V1 priorities and definition of done.
 
-Repository: `Dhanushreddyj/python-rag`
-Live baseline reviewed: `main` at commit `b754e9771ccb7cac63b5a15bd3e08bed446fd5d3` during the architecture review.
+## 2. Architecture Result
 
-The repository contains a useful FastAPI/RAG/provider/Qdrant baseline but must not be described as production-ready. The accepted architecture is ahead of the current implementation, intentionally.
+**Core architecture retained. V1 scope and sequencing require correction.**
 
-## 3. Governance Readiness
+Accepted unchanged:
 
-Complete/accepted:
+- Python AI microservice behind Next.js;
+- CPython 3.14.7, FastAPI and Pydantic;
+- LangGraph for orchestration only;
+- clean dependency direction, thin controllers and provider contracts;
+- Qdrant-only V1 vector storage;
+- LM Studio/Qwen development LLM and Bedrock production providers;
+- citations, streaming, typed errors, security and observability.
 
-- `MASTER_CONTEXT.md`;
-- `PROJECT_VISION.md`;
-- `ARCHITECTURE.md`;
-- ADR-001–ADR-008;
-- explicit deferrals ADR-009–ADR-011;
-- `CODE_STYLE.md`;
-- `CONTRIBUTING.md`;
-- `TESTING.md`;
-- `SECURITY.md`;
-- `API_GUIDELINES.md`;
-- `OBSERVABILITY.md`;
-- `ROADMAP.md`;
-- `TASKS.md`;
-- `PROMPTS.md` controlled first draft.
+Promoted to mandatory V1:
 
-The governance correction gate has been revalidated. Dependency syntax is valid, prompt paths resolve to repository documents, and the runtime baseline is consistently pinned to CPython 3.14.7.
+- 110 canonical Markdown sources and YAML metadata;
+- semantic chunking and parent context;
+- static/live/model/action routing;
+- Qdrant hybrid retrieval and reranking;
+- pre-LLM permission filtering and namespaces;
+- hashing, versions, incremental indexing and reconciliation;
+- source precedence, conflicts and explicit UNKNOWN behavior;
+- 300–500 question evaluation including routing and privacy gates.
 
-Revalidated gate results:
+## 3. Direct Corrections
 
-1. `requirements.txt` contains valid requirement lines without trailing continuation characters — **PASS**.
-2. `PROMPTS.md` references resolvable repository `docs/` paths — **PASS**.
-3. Runtime documentation and prompt constraints consistently require CPython 3.14.7 — **PASS**.
+The previous architecture called hybrid search lower priority, deferred source identity/version policy, placed evaluation late, and routed normal requests directly to retrieval. Those positions are superseded by this requirements alignment.
 
-## 4. Key Implementation Findings Still Open
+OpenSearch examples in the instruction are conditional. Qdrant remains the accepted vector database unless a later explicit company decision supersedes ADR-001.
 
-Evidence from the reviewed baseline includes:
+## 4. Implementation Suspension
 
-1. startup imports a missing `validate_settings` configuration function;
-2. embedding factory naming/wiring is inconsistent (`get_embedding_provider` vs `get_embeddings_provider` in reviewed paths);
-3. provider config/embedding defaults are inconsistent with available factory branches;
-4. async functions are called without `await` in RAG/ingestion/retrieval paths;
-5. an answer-cache path uses `lru_cache` with list/dict-like inputs that are not valid stable cache keys;
-6. Qdrant provider SDK usage, query-vector/embedding wiring, filtering/model usage, collection configuration, and async boundaries require correction;
-7. Chroma code/dependencies/configuration remain even though ADR-001 rejects Chroma for V1;
-8. current controllers access vector-store internals/application responsibilities directly;
-9. raw exception strings can leak through HTTP 500 responses;
-10. wildcard CORS/current rate-state behavior is not production architecture;
-11. health endpoints are static rather than real liveness/readiness separation;
-12. runtime logging uses `print()` rather than structured telemetry;
-13. tests are insufficient; one query shape test accepts HTTP 500 as valid;
-14. LangGraph V1 orchestration is not implemented yet;
-15. end-to-end SSE/citation/session architecture is not yet implemented;
-16. README/current dependency descriptions contain legacy assumptions relative to accepted architecture.
+Previous FND-001/CL-001 authorization is withdrawn while this change is reviewed.
 
-These findings justify Phase 1 hardening. They are not permission for one bulk rewrite.
+- Do not commit the malformed or incomplete local Cline work.
+- Do not discard it without inspection.
+- Do not begin parser, retrieval or routing implementation.
+- No task becomes executable merely because it appears in the revised backlog.
 
-## 5. Architecture Review Result
+## 5. Missing Inputs
 
-**Architecture: ACCEPTED. Implementation baseline: NOT production-ready.**
+Before dependent tasks can be accepted, the project needs:
 
-Keep approximately the existing architectural direction; refactor/harden through bounded tasks rather than rewriting the project.
+1. the 110 canonical Markdown files;
+2. confirmed YAML metadata/schema examples across the corpus;
+3. existing live domain API/tool contracts or owning-team contacts;
+4. user role, market, tenant and authorization-context schema from Next.js;
+5. confirmation that Qdrant hybrid retrieval satisfies company infrastructure expectations;
+6. exact production requirements for authentication, telemetry and deployment.
 
-The first implementation task should be FND-001 configuration/startup validation because it is a narrow blocker and establishes a reliable startup boundary without forcing simultaneous provider/RAG rewrites.
+## 6. Proposed Decisions
 
-## 6. Deferred Decisions
+ADR-012 through ADR-018 capture canonical lifecycle, routing, hybrid retrieval, permission namespaces, synchronization, source precedence and evaluation gates. They remain PROPOSED until reviewed and accepted.
 
-The following are intentionally not blockers for early local/foundation hardening but **are blockers for the work that depends on them and for production release**:
+## 7. Review Gate
 
-- ADR-009 production authentication/trust mechanism;
-- ADR-010 production telemetry stack;
-- ADR-011 deployment/runtime topology;
-- production session persistence technology if required;
-- exact production Bedrock model IDs/configuration for final provider/evaluation/index validation;
-- exact current development embedding provider/model for index-specific integration work.
+Implementation may resume only after:
 
-No implementation task may silently choose these decisions.
+- authoritative documents contain no contradiction;
+- the new ADRs are accepted or revised;
+- required inputs for the promoted task exist;
+- the local worktree is inspected;
+- one revised prompt is explicitly authorized.
 
-## 7. Implementation-Entry Recommendation
+## 8. Final Review Position
 
-**Decision: APPROVED — FND-001 implementation entry authorized.**
-
-The controlled execution sequence is:
-
-- FND-001 is promoted to `READY` and authorized;
-- CL-001 is `ARCHITECT_APPROVED` and executable;
-- run only CL-001 in Cline;
-- return the diff/test output for senior-engineer review;
-- do not generate/execute CL-002 until FND-001 review is accepted.
-
-This recommendation does **not** authorize LangGraph, feature expansion, production deployment, or a bulk refactor.
-
-## 8. Entry Gate Checklist
-
-| Gate | Result |
-| --- | --- |
-| Mission/service boundary explicit | PASS |
-| Architecture/dependency direction accepted | PASS |
-| Provider/Qdrant strategy accepted | PASS |
-| Streaming/session semantics accepted | PASS |
-| Security/testing/API/observability standards defined | PASS |
-| ADR deferrals explicit | PASS |
-| Phase roadmap/task dependencies defined | PASS |
-| First Cline prompt narrowly scoped | PASS — pending governance gate |
-| Current code production-ready | FAIL — expected; hardening required |
-| Implementation authorized by owner | PASS — FND-001 only |
-
-## 9. Review Discipline After Entry
-
-For every task:
-
-1. approve exact prompt/scope;
-2. Cline implements only that scope;
-3. tests run and evidence is returned;
-4. senior engineer reviews actual diff;
-5. defects are fixed/re-reviewed;
-6. task becomes `DONE` only after acceptance;
-7. then generate/promote the next prompt.
-
-## 10. Final Pre-Implementation State
-
-The project is architecturally and documentationally prepared for controlled implementation hardening. The next action is to execute FND-001 only; all subsequent implementation remains blocked pending its tests and senior-engineer diff review.
+The assignment is to build a Nofeez knowledge and orchestration layer—not a chatbot over 110 files. Governance alignment is the only authorized work in this change set.
