@@ -1,6 +1,6 @@
 # ADR-014 — Qdrant Hybrid Retrieval and Reranking
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-08-18
 **Related:** ADR-001, ADR-006
 

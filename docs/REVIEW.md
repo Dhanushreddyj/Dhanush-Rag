@@ -1,9 +1,9 @@
 # Nofeez AI Platform — Engineering Review Record
 
-**Status:** REQUIREMENTS REALIGNMENT IN REVIEW
+**Status:** REQUIREMENTS REALIGNMENT ACCEPTED
 **Version:** 2.0
-**Last Updated:** 2026-08-18
-**Implementation:** SUSPENDED
+**Last Updated:** 2026-08-19
+**Implementation:** AUTHORIZED — FND-001 ONLY
 
 ## 1. Review Trigger
 
@@ -44,12 +44,13 @@ OpenSearch examples in the instruction are conditional. Qdrant remains the accep
 
 ## 4. Implementation Suspension
 
-Previous FND-001/CL-001 authorization is withdrawn while this change is reviewed.
+Previous FND-001/CL-001 authorization was withdrawn during requirements review. The local working tree was subsequently reset to `origin/main`, and the 2026-08-19 inspection confirmed that no application or test implementation changes remain. Current tracked changes are documentation-only; untracked agent-rule files are outside the implementation scope.
 
-- Do not commit the malformed or incomplete local Cline work.
-- Do not discard it without inspection.
-- Do not begin parser, retrieval or routing implementation.
-- No task becomes executable merely because it appears in the revised backlog.
+GOV-003 is complete. CL-001-R1 is ARCHITECT_APPROVED, and only FND-001 is authorized.
+
+- do not begin parser, retrieval, routing or any later implementation;
+- FND-001 is the only task eligible for promotion;
+- no task becomes executable merely because it appears in the backlog.
 
 ## 5. Missing Inputs
 
@@ -62,20 +63,24 @@ Before dependent tasks can be accepted, the project needs:
 5. confirmation that Qdrant hybrid retrieval satisfies company infrastructure expectations;
 6. exact production requirements for authentication, telemetry and deployment.
 
-## 6. Proposed Decisions
+These are task-specific external inputs. They do not block FND-001, which requires no corpus, live API, authorization schema or production credentials.
 
-ADR-012 through ADR-018 capture canonical lifecycle, routing, hybrid retrieval, permission namespaces, synchronization, source precedence and evaluation gates. They remain PROPOSED until reviewed and accepted.
+## 6. Accepted Decisions
+
+ADR-012 through ADR-018 were accepted on 2026-08-19. They govern canonical lifecycle, routing, hybrid retrieval, permission namespaces, synchronization, source precedence and evaluation gates.
 
 ## 7. Review Gate
 
-Implementation may resume only after:
+All governance gates required for FND-001 are satisfied:
 
-- authoritative documents contain no contradiction;
-- the new ADRs are accepted or revised;
-- required inputs for the promoted task exist;
-- the local worktree is inspected;
-- one revised prompt is explicitly authorized.
+- authoritative documents contain no known architecture contradiction;
+- ADR-012 through ADR-018 are accepted;
+- FND-001 requires none of the missing task-specific external inputs;
+- the local working tree contains no application or test implementation changes;
+- GOV-003 registered CL-001-R1 as ARCHITECT_APPROVED.
+
+Only FND-001 may execute. Every later task remains gated.
 
 ## 8. Final Review Position
 
-The assignment is to build a Nofeez knowledge and orchestration layer—not a chatbot over 110 files. Governance alignment is the only authorized work in this change set.
+Governance alignment is accepted and FND-001 is authorized through CL-001-R1. No later implementation task may begin until FND-001 tests and senior-engineer review are accepted.

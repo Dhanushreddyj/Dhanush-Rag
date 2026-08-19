@@ -1,9 +1,9 @@
 # Nofeez AI Platform — Engineering Task Backlog
 
-**Status:** PROPOSED REQUIREMENTS ALIGNMENT
+**Status:** ACTIVE
 **Version:** 2.0
-**Last Updated:** 2026-08-18
-**Implementation State:** SUSPENDED — NO EXECUTABLE CLINE PROMPT
+**Last Updated:** 2026-08-19
+**Implementation State:** FND-001 READY — CL-001-R1 ONLY
 
 ## 1. Purpose
 
@@ -22,16 +22,16 @@ This backlog converts ROADMAP.md into bounded tasks. A task is executable only w
 
 | ID | Priority | Task | Depends On | Status |
 | --- | --- | --- | --- | --- |
-| GOV-001 | P0 | Commit authoritative Nofeez implementation requirement | instruction document | PROPOSED |
-| GOV-002 | P0 | Requirements traceability and contradiction resolution | GOV-001 | PROPOSED |
-| ADR-012–018 | P0 | Accept knowledge, routing, retrieval, permission, lifecycle and evaluation decisions | GOV-002 | PROPOSED |
-| GOV-003 | P0 | Promote revised first implementation prompt | ADR acceptance | PLANNED |
+| GOV-001 | P0 | Commit authoritative Nofeez implementation requirement | instruction document | DONE |
+| GOV-002 | P0 | Requirements traceability and contradiction resolution | GOV-001 | DONE |
+| ADR-012–018 | P0 | Accept knowledge, routing, retrieval, permission, lifecycle and evaluation decisions | GOV-002 | DONE |
+| GOV-003 | P0 | Promote revised first implementation prompt | ADR acceptance | DONE |
 
 ## 4. Runtime Foundation
 
 | ID | Priority | Task | Depends On | Status |
 | --- | --- | --- | --- | --- |
-| FND-001 | P0 | Configuration/startup validation boundary | GOV-003 | SUSPENDED |
+| FND-001 | P0 | Configuration/startup validation boundary | GOV-003 | READY |
 | FND-002 | P0 | Platform error taxonomy | FND-001 | PLANNED |
 | FND-003 | P0 | Async provider contract normalization | FND-002 | PLANNED |
 | FND-004 | P0 | Provider composition and one-active-provider selection | FND-003 | PLANNED |
@@ -114,4 +114,4 @@ Critical release criteria: zero permission leakage, zero fabricated inventory, z
 
 ## 10. Promotion Rule
 
-No task is READY. After this governance change is reviewed, accept or revise ADR-012 through ADR-018, supply the required canonical/API/authorization inputs, then promote exactly one bounded prompt.
+Exactly one implementation task is READY: FND-001 through CL-001-R1. No later task is executable. Missing canonical corpus, API and authorization inputs continue to block only the tasks that depend on them. Completion of FND-001 requires focused tests and senior-engineer acceptance before any later prompt may be promoted.

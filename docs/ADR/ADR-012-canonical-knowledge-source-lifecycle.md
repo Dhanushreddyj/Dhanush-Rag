@@ -1,11 +1,11 @@
 # ADR-012 — Canonical Knowledge Source and Lifecycle
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-08-18
 
 ## Context
 
-Nofeez supplied 110 approved Markdown modules containing stable product and business semantics. They are source records, not disposable upload files. The prior architecture described generic document ingestion and deferred exact identity/version policy.
+The authoritative Nofeez requirements define a corpus of 110 approved Markdown modules containing stable product and business semantics. Delivery and validation of the complete corpus remain external inputs.
 
 ## Decision
 

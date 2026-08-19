@@ -1,6 +1,6 @@
 # ADR-015 — Permission-Aware Knowledge Namespaces and Context Assembly
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-08-18
 **Related:** ADR-009
 

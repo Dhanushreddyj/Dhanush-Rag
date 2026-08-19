@@ -1,6 +1,6 @@
 # ADR-016 — Incremental Indexing and Reconciliation
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-08-18
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR-018 — AI Evaluation and Release Gates
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-08-18
 
 ## Context

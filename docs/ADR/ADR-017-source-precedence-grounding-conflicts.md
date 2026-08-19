@@ -1,6 +1,6 @@
 # ADR-017 — Source Precedence, Grounding and Conflict Handling
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-08-18
 
 ## Context
