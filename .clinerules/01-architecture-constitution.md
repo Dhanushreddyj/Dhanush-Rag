@@ -1,0 +1,25 @@
+# Architecture Constitution
+
+- Python 3.14.7 only.
+- FastAPI is the HTTP framework.
+- LangGraph is for orchestration only.
+- Controllers remain thin.
+- Application services orchestrate use cases.
+- Providers communicate with external systems.
+- Repositories own persistence.
+- Prompt Builder owns prompts.
+- Retriever owns retrieval and ranking.
+- Response Builder owns citations and formatting.
+- Session Manager owns session state.
+- Business logic remains provider-agnostic.
+- Provider selection is configuration-driven.
+- Only one provider is active per capability.
+- Production LLM: AWS Bedrock models.
+- Production embeddings: AWS Bedrock embedding models.
+- Development LLM: Qwen through LM Studio.
+- Development embeddings remain configuration-driven.
+- Qdrant is the only approved V1 vector store.
+- Chroma is not an approved V1 runtime path.
+- No SDK clients in business logic.
+- No hard-coded credentials, IPs, ports, or model IDs.
+- No circular dependencies.

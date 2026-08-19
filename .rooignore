@@ -1,0 +1,45 @@
+.git/
+
+*.pyc
+*.pyo
+
+.vscode/
+.idea/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Generated artifacts
+build/
+dist/
+logs/
+tmp/
+temp/
+uploads/
+
+# Runtime and application data
+data/
+*.log
+
+# Large documents and binaries
+*.pdf
+*.docx
+*.zip
+
+# Editor and OS metadata
+.vscode/
+.idea/
+.DS_Store
