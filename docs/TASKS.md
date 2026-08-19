@@ -2,8 +2,8 @@
 
 **Status:** ACTIVE
 **Version:** 2.0
-**Last Updated:** 2026-08-19
-**Implementation State:** FND-001 READY — CL-001-R1 ONLY
+**Last Updated:** 2026-08-20
+**Implementation State:** FND-002 READY — CL-002 ONLY
 
 ## 1. Purpose
 
@@ -31,8 +31,8 @@ This backlog converts ROADMAP.md into bounded tasks. A task is executable only w
 
 | ID | Priority | Task | Depends On | Status |
 | --- | --- | --- | --- | --- |
-| FND-001 | P0 | Configuration/startup validation boundary | GOV-003 | READY |
-| FND-002 | P0 | Platform error taxonomy | FND-001 | PLANNED |
+| FND-001 | P0 | Configuration/startup validation boundary | GOV-003 | DONE |
+| FND-002 | P0 | Platform error taxonomy | FND-001 | READY |
 | FND-003 | P0 | Async provider contract normalization | FND-002 | PLANNED |
 | FND-004 | P0 | Provider composition and one-active-provider selection | FND-003 | PLANNED |
 | FND-005 | P0 | Remove all legacy Chroma runtime/config/dependency paths | FND-004 | PLANNED |
@@ -114,4 +114,4 @@ Critical release criteria: zero permission leakage, zero fabricated inventory, z
 
 ## 10. Promotion Rule
 
-Exactly one implementation task is READY: FND-001 through CL-001-R1. No later task is executable. Missing canonical corpus, API and authorization inputs continue to block only the tasks that depend on them. Completion of FND-001 requires focused tests and senior-engineer acceptance before any later prompt may be promoted.
+Exactly one implementation task is READY: FND-002 through CL-002. No later task is executable. Missing canonical corpus, API and authorization inputs continue to block only the tasks that depend on them. FND-001 is DONE. CL-001-R1 is ACCEPTED. No task becomes executable merely because it appears in the backlog.

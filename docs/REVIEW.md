@@ -1,86 +1,103 @@
 # Nofeez AI Platform — Engineering Review Record
 
-**Status:** REQUIREMENTS REALIGNMENT ACCEPTED
-**Version:** 2.0
-**Last Updated:** 2026-08-19
-**Implementation:** AUTHORIZED — FND-001 ONLY
+**Status:** FND-001 ACCEPTED — FND-002 AUTHORIZED
+**Version:** 2.1
+**Last Updated:** 2026-08-20
+**Implementation:** FND-002 READY — CL-002 ONLY
 
 ## 1. Review Trigger
 
-The project owner supplied the authoritative “Nofeez RAG Implementation Instructions for Intern,” containing 66 requirements for a knowledge and orchestration layer over 110 canonical Markdown modules.
-
-The previous review accepted a generic production Agentic RAG foundation and authorized FND-001. The new requirement does not invalidate the clean architecture, provider boundaries, Qdrant decision or runtime foundation; it changes V1 priorities and definition of done.
+PR #7 completed FND-001 configuration and startup validation. This review records its acceptance, promotes FND-002, and preserves the accepted Nofeez requirements alignment and architecture.
 
 ## 2. Architecture Result
 
-**Core architecture retained. V1 scope and sequencing require correction.**
+**Core architecture retained. No architecture decision changed.**
 
-Accepted unchanged:
+The following remain authoritative:
 
-- Python AI microservice behind Next.js;
-- CPython 3.14.7, FastAPI and Pydantic;
-- LangGraph for orchestration only;
-- clean dependency direction, thin controllers and provider contracts;
-- Qdrant-only V1 vector storage;
-- LM Studio/Qwen development LLM and Bedrock production providers;
-- citations, streaming, typed errors, security and observability.
+- the Python AI microservice remains behind the existing Next.js backend;
+- CPython 3.14.7, FastAPI, and Pydantic remain approved;
+- LangGraph remains limited to orchestration;
+- clean dependency direction, thin controllers, and provider-neutral contracts remain mandatory;
+- Qdrant remains the only V1 vector store;
+- LM Studio/Qwen remains the development LLM path;
+- AWS Bedrock remains the production LLM and embedding path; and
+- the canonical knowledge, routing, permission, synchronization, grounding, and evaluation decisions remain governed by ADR-012 through ADR-018.
 
-Promoted to mandatory V1:
+## 3. FND-001 Acceptance
 
-- 110 canonical Markdown sources and YAML metadata;
-- semantic chunking and parent context;
-- static/live/model/action routing;
-- Qdrant hybrid retrieval and reranking;
-- pre-LLM permission filtering and namespaces;
-- hashing, versions, incremental indexing and reconciliation;
-- source precedence, conflicts and explicit UNKNOWN behavior;
-- 300–500 question evaluation including routing and privacy gates.
+FND-001 is DONE and CL-001-R1 is ACCEPTED.
 
-## 3. Direct Corrections
+Accepted evidence from PR #7:
 
-The previous architecture called hybrid search lower priority, deferred source identity/version policy, placed evaluation late, and routed normal requests directly to retrieval. Those positions are superseded by this requirements alignment.
+- startup configuration validation is implemented in `app/config.py`;
+- focused validation tests are implemented in `tests/test_config.py`;
+- CPython 3.14.7 was confirmed;
+- 47 focused configuration tests passed;
+- compilation passed;
+- `git diff --check` passed; and
+- the reviewed implementation was merged through PR #7.
 
-OpenSearch examples in the instruction are conditional. Qdrant remains the accepted vector database unless a later explicit company decision supersedes ADR-001.
+This acceptance is limited to FND-001. It does not claim that the complete test suite passes or that unrelated baseline defects are fixed.
 
-## 4. Implementation Suspension
+## 4. Governance Transition
 
-Previous FND-001/CL-001 authorization was withdrawn during requirements review. The local working tree was subsequently reset to `origin/main`, and the 2026-08-19 inspection confirmed that no application or test implementation changes remain. Current tracked changes are documentation-only; untracked agent-rule files are outside the implementation scope.
+The implementation queue is no longer suspended at FND-001.
 
-GOV-003 is complete. CL-001-R1 is ARCHITECT_APPROVED, and only FND-001 is authorized.
+- FND-002 is READY.
+- CL-002 is ARCHITECT_APPROVED.
+- FND-002 through CL-002 is the only executable implementation task.
+- FND-003 and later remain non-executable.
+- CL-003 and later remain NOT GENERATED.
+- No later task becomes executable merely because it appears in the backlog.
 
-- do not begin parser, retrieval, routing or any later implementation;
-- FND-001 is the only task eligible for promotion;
-- no task becomes executable merely because it appears in the backlog.
+Governance documents, task promotion, controlled prompts, review records, ADRs, and workspace rules are maintained by the project owner and principal architect. Cline may read those sources but is used only for implementation and test-code generation under the active approved prompt.
 
-## 5. Missing Inputs
+## 5. FND-002 Review Gate
 
-Before dependent tasks can be accepted, the project needs:
+The FND-002 gate is satisfied because:
+
+- its dependency, FND-001, is accepted;
+- its scope is limited to the platform error taxonomy;
+- CL-002 defines exactly three allowed implementation files;
+- the task requires no canonical corpus, live API schema, production credentials, provider connection, Qdrant connection, LM Studio connection, or Bedrock access; and
+- the task remains framework-neutral and provider-neutral.
+
+FND-002 must stop after focused implementation, tests, and evidence. Commit and push remain owner-controlled actions.
+
+## 6. Missing Inputs
+
+The following inputs are still required before their dependent tasks can be promoted:
 
 1. the 110 canonical Markdown files;
 2. confirmed YAML metadata/schema examples across the corpus;
 3. existing live domain API/tool contracts or owning-team contacts;
-4. user role, market, tenant and authorization-context schema from Next.js;
-5. confirmation that Qdrant hybrid retrieval satisfies company infrastructure expectations;
-6. exact production requirements for authentication, telemetry and deployment.
+4. user role, market, tenant, and authorization-context schema from Next.js;
+5. confirmation that Qdrant hybrid retrieval satisfies company infrastructure expectations; and
+6. exact production requirements for authentication, telemetry, and deployment.
 
-These are task-specific external inputs. They do not block FND-001, which requires no corpus, live API, authorization schema or production credentials.
+These inputs do not block FND-002. KB-001 remains BLOCKED_INPUT until the corpus is imported and inspected through its separate authorized workflow.
 
-## 6. Accepted Decisions
+## 7. Accepted Decisions
 
-ADR-012 through ADR-018 were accepted on 2026-08-19. They govern canonical lifecycle, routing, hybrid retrieval, permission namespaces, synchronization, source precedence and evaluation gates.
+ADR-001 through ADR-008 remain accepted. ADR-009 through ADR-011 remain explicit deferred decisions. ADR-012 through ADR-018 were accepted on 2026-08-19 and continue to govern canonical lifecycle, routing, hybrid retrieval, permission namespaces, synchronization, source precedence, and evaluation gates.
 
-## 7. Review Gate
+## 8. Deferred Runtime Problems
 
-All governance gates required for FND-001 are satisfied:
+The repository still contains known problems assigned to later foundation tasks:
 
-- authoritative documents contain no known architecture contradiction;
-- ADR-012 through ADR-018 are accepted;
-- FND-001 requires none of the missing task-specific external inputs;
-- the local working tree contains no application or test implementation changes;
-- GOV-003 registered CL-001-R1 as ARCHITECT_APPROVED.
+- legacy Chroma runtime and configuration paths;
+- missing LangChain-related imports during broader test collection;
+- async provider calls made without `await`;
+- embedding-factory naming mismatch;
+- invalid Qdrant SDK usage;
+- incomplete Bedrock configuration wiring;
+- provider-specific OpenAI assumptions;
+- weak API tests that accept HTTP 500; and
+- generic routes that expose raw exception strings.
 
-Only FND-001 may execute. Every later task remains gated.
+These problems must not be repaired opportunistically during FND-002. Their presence means the platform is not production-ready.
 
-## 8. Final Review Position
+## 9. Final Review Position
 
-Governance alignment is accepted and FND-001 is authorized through CL-001-R1. No later implementation task may begin until FND-001 tests and senior-engineer review are accepted.
+FND-001 and CL-001-R1 are accepted. FND-002 is READY through the ARCHITECT_APPROVED CL-002 prompt. Only FND-002 may execute, only its three authorized implementation files may change, and FND-003 must not begin until FND-002 evidence is reviewed and accepted.

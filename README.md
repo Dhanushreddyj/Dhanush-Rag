@@ -17,7 +17,7 @@ The platform is being built for long-term maintainability, provider independence
 | Production LLM | AWS Bedrock models |
 | Production embeddings | AWS Bedrock embedding models |
 | Requirements alignment | In progress — 110-module Nofeez knowledge system |
-| Implementation authorization | Suspended pending governance acceptance |
+| Implementation authorization | FND-001 complete; FND-002 is the only authorized task |
 | Production readiness | Not yet reached |
 
 The accepted architecture is ahead of the current implementation. Work is intentionally delivered as small, reviewable tasks rather than as a project-wide rewrite.
@@ -376,7 +376,7 @@ application or repository layer.
 uvicorn app.main:app --reload
 ```
 
-The implementation queue is suspended while the 110-module Nofeez requirements are aligned with the architecture, ADRs, roadmap and controlled prompts. Do not execute CL-001 or later implementation prompts until the governance gate is explicitly accepted.
+The governance gate for FND-002 is accepted; FND-003 and later remain blocked.
 
 ### Run tests
 
@@ -452,6 +452,8 @@ Every implementation task must:
 7. Wait for review acceptance before the next prompt is generated.
 
 The controlled prompt registry is PROMPTS.md. The active backlog is TASKS.md.
+
+Governance documents, task promotion, prompt authorization, and workspace rules are maintained by the project owner and principal architect. Cline is used only for implementation and test-code generation under an already approved prompt; it may read governance sources but must not edit them.
 
 ## Non-negotiable rules
 
