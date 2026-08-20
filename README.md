@@ -17,10 +17,11 @@ The platform is being built for long-term maintainability, provider independence
 | Production LLM | AWS Bedrock models |
 | Production embeddings | AWS Bedrock embedding models |
 | Requirements alignment | In progress — 110-module Nofeez knowledge system |
-| Implementation authorization | FND-001 complete; FND-002 is the only authorized task |
+| Implementation authorization | FND-001 complete; DEV-RAG-001 through CX-DEV-RAG-001 is solely authorized |
+| Implementation tool | Codex |
 | Production readiness | Not yet reached |
 
-The accepted architecture is ahead of the current implementation. Work is intentionally delivered as small, reviewable tasks rather than as a project-wide rewrite.
+The owner-prioritized goal is a working development RAG vertical slice delivered through the bounded DEV-RAG-001 sequencing exception. The accepted architecture is unchanged and remains ahead of the current implementation; later improvements are gated, and the service is not production-ready.
 
 ## What this service does
 
@@ -185,7 +186,7 @@ Provider choices are configuration-driven and selected during application compos
 | Vector database | Qdrant | Qdrant | Qdrant is the only approved V1 vector database |
 | Orchestration | LangGraph | LangGraph | LangGraph owns orchestration only |
 
-The local development topology is a Mac running VS Code/Cline connected to a PC running LM Studio and the local Qwen model. The endpoint, port, host, and model identifier are configuration values; they must not be hard-coded in application source.
+The local development topology is a Mac running VS Code/Codex connected to a PC running LM Studio and the local Qwen model. The endpoint, port, host, and model identifier are configuration values; they must not be hard-coded in application source.
 
 ### Provider neutrality
 
@@ -223,7 +224,7 @@ Production deployment topology is intentionally deferred until the required plat
 
 ### Development tooling
 
-- VS Code and Cline on the Mac
+- VS Code and Codex on the Mac
 - Local Qwen 3.6 served by LM Studio on the PC
 - Git and GitHub
 - Qdrant Cloud for the current development environment; self-hosted Qdrant
@@ -336,7 +337,7 @@ python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
 ```
 
-Use `requirements.txt` for runtime-only installations and `requirements-dev.txt` for local development, testing, linting, and type checking. The dependency files are part of the runtime-foundation hardening work. Legacy Chroma dependencies found in the audited baseline are outside the approved architecture and are removed through the scoped FND-005 task.
+Use `requirements.txt` for runtime-only installations and `requirements-dev.txt` for local development, testing, linting, and type checking. The dependency files are part of the runtime-foundation hardening work. Legacy Chroma dependencies and runtime paths found in the audited baseline are outside the approved architecture and must be removed where required by DEV-RAG-001.
 
 ### Configure the service
 
@@ -376,7 +377,7 @@ application or repository layer.
 uvicorn app.main:app --reload
 ```
 
-The governance gate for FND-002 is accepted; FND-003 and later remain blocked.
+DEV-RAG-001 through CX-DEV-RAG-001 is the sole authorized implementation task and prompt. FND-002 through FND-009 remain PLANNED and are not independently executable; later improvements remain gated.
 
 ### Run tests
 
@@ -434,7 +435,7 @@ Implementation follows a controlled sequence:
 ```mermaid
 flowchart TD
     Requirement["Requirement"] --> Decision["Architecture decision"]
-    Decision --> Prompt["Scoped Cline prompt"]
+    Decision --> Prompt["Scoped controlled prompt"]
     Prompt --> Implementation["Implementation"]
     Implementation --> Evidence["Tests and diff evidence"]
     Evidence --> Review["Senior-engineer review"]
@@ -453,7 +454,7 @@ Every implementation task must:
 
 The controlled prompt registry is PROMPTS.md. The active backlog is TASKS.md.
 
-Governance documents, task promotion, prompt authorization, and workspace rules are maintained by the project owner and principal architect. Cline is used only for implementation and test-code generation under an already approved prompt; it may read governance sources but must not edit them.
+Governance documents, task promotion, prompt authorization, and workspace rules are maintained by the project owner and principal architect. Codex is the current implementation engineer and may implement only an already approved prompt within its exact file scope. Cline and Roo are inactive unless explicitly reauthorized.
 
 ## Non-negotiable rules
 
@@ -511,7 +512,7 @@ The current ordered roadmap is maintained in ROADMAP.md. Future capabilities beg
 
 - [Roadmap](docs/ROADMAP.md)
 - [Tasks](docs/TASKS.md)
-- [Cline Prompt Registry](docs/PROMPTS.md)
+- [Controlled Prompt Registry](docs/PROMPTS.md)
 - [Engineering Review](docs/REVIEW.md)
 
 New engineers should read [MASTER_CONTEXT.md](docs/MASTER_CONTEXT.md), [PROJECT_VISION.md](docs/PROJECT_VISION.md), [ARCHITECTURE.md](docs/ARCHITECTURE.md), and the relevant ADRs before changing application code.
