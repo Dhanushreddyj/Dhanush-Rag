@@ -1,15 +1,15 @@
-# Nofeez AI Platform — Controlled Cline Prompt Registry
+# Nofeez AI Platform — Controlled Implementation Prompt Registry
 
 **Status:** ACTIVE
 **Version:** 2.0
 **Last Updated:** 2026-08-20
-**Implementation State:** CL-002 ARCHITECT_APPROVED — FND-002 ONLY
+**Implementation State:** CX-DEV-RAG-001 ARCHITECT_APPROVED — DEV-RAG-001 ONLY
 
 ## 1. Purpose
 
-This registry controls implementation prompts sent to Cline/local models. The authoritative Nofeez requirements materially changed the V1 scope after CL-001 was prepared.
+This tool-neutral registry controls implementation prompts. The authoritative Nofeez requirements materially changed the V1 scope after CL-001 was prepared.
 
-The project owner and principal architect maintain this registry. Cline may read it but must not edit governance documents, task status, prompt authorization, review records, ADRs, or workspace rules. Cline is used only for implementation and test-code generation under an already ARCHITECT_APPROVED prompt.
+The project owner and principal architect maintain this registry. Implementation tools may read it but must not edit governance documents, task status, prompt authorization, review records, ADRs, or workspace rules. An implementation tool may generate code and tests only under an already ARCHITECT_APPROVED prompt assigned to that tool.
 
 ## 2. Current Authorization
 
@@ -17,7 +17,9 @@ CL-001 remains suspended as a historical prompt prepared before the accepted Nof
 
 CL-001-R1 is ACCEPTED after successful FND-001 implementation and review.
 
-CL-002 is the only ARCHITECT_APPROVED and executable implementation prompt. It authorizes only FND-002. CL-003 and every later prompt are NOT GENERATED and remain non-executable.
+CL-002 and CX-002 are SUPERSEDED and non-executable.
+
+CX-DEV-RAG-001 is the only ARCHITECT_APPROVED and executable implementation prompt. It authorizes only DEV-RAG-001. Every later prompt is NOT GENERATED and remains non-executable.
 
 ## 3. Prompt Lifecycle
 
@@ -31,18 +33,20 @@ Only ARCHITECT_APPROVED prompts are executable.
 | --- | --- | --- | --- |
 | CL-001 | Former FND-001 prompt | SUSPENDED | Superseded by CL-001-R1 |
 | CL-001-R1 | FND-001 configuration/startup validation | ACCEPTED | Implemented and accepted through PR #7 |
-| CL-002 | FND-002 platform error taxonomy | ARCHITECT_APPROVED | Only executable implementation prompt |
-| CL-003+ | Later tasks | NOT GENERATED | Blocked until FND-002 is accepted |
+| CL-002 | FND-002 platform error taxonomy | SUPERSEDED | Non-executable; implementation ownership moved to Codex |
+| CX-002 | FND-002 platform error taxonomy | SUPERSEDED | Non-executable; replaced by the owner-prioritized vertical-slice sequence |
+| CX-DEV-RAG-001 | DEV-RAG-001 working development RAG vertical slice | ARCHITECT_APPROVED | Only executable implementation prompt |
+| All later prompts | Later tasks and improvements | NOT GENERATED | Gated until DEV-RAG-001 evidence is reviewed |
 
 ## 5. Mandatory Prompt Controls
 
-Every prompt must name one objective, allowed files, prohibited scope, governing ADRs, deterministic tests, required evidence and stop conditions. Cline must use editor-native changes rather than shell-generated source files and must stop after repeated tool or syntax failure.
+Every prompt must name one objective, allowed files, prohibited scope, governing ADRs, deterministic tests, required evidence and stop conditions. The assigned implementation tool must use editor-native changes rather than shell-generated source files and must stop after repeated tool or syntax failure.
 
-Cline prompts authorize code and test generation only. They never authorize Cline to edit this registry, other governance documents, ADRs, review records, or workspace rules.
+Implementation prompts authorize code and test generation only. They never authorize the implementation tool to edit this registry, other governance documents, ADRs, review records, or workspace rules.
 
 ## 6. Current Rule
 
-Only CL-002 may execute. It authorizes only FND-002 and must stop after implementation, focused testing and evidence collection. It must not commit, push or begin FND-003.
+Only CX-DEV-RAG-001 may execute. It authorizes Codex to implement only DEV-RAG-001 and requires a stop after implementation, offline verification, and an explicitly owner-authorized live gate or exact live-gate blocker. Codex must not stage, commit, push, merge, or begin later improvements.
 
 ## 7. CL-001-R1 — FND-001 Configuration and Startup Validation
 
@@ -163,9 +167,9 @@ Report:
 
 Stop after FND-001 evidence. Do not start another task.
 
-## 8. CL-002 — FND-002 Platform Error Taxonomy
+## 8. CX-002 — FND-002 Platform Error Taxonomy
 
-**Status:** ARCHITECT_APPROVED
+**Status:** SUPERSEDED — NON-EXECUTABLE
 
 ### Objective
 
@@ -298,4 +302,159 @@ Report:
 - compilation and diff-check results;
 - remaining blockers or deferred issues.
 
-Stop after FND-002 evidence. Do not stage, commit, push, or begin FND-003.
+Stop after FND-002 evidence. Codex must not stage, commit, push, or begin FND-003.
+
+## 9. CX-DEV-RAG-001 — Working Development RAG Vertical Slice
+
+**Status:** ARCHITECT_APPROVED
+
+### Sequencing Authority
+
+The owner authorizes Codex to complete the repairs necessary for one working development RAG vertical slice before later code improvements. This is an explicit sequencing exception. It does not redesign or simplify the approved architecture, authorize completion claims for the enterprise backlog, or establish production readiness.
+
+DEV-RAG-001 is the only READY implementation task. FND-002 through FND-009 remain PLANNED and are not independently executable while it is active. Their applicable runtime-foundation requirements may be satisfied and mapped during DEV-RAG-001 review, but none may be marked DONE before evidence review.
+
+### Objective
+
+Deliver this verified development flow:
+
+1. Import and start the FastAPI application under CPython 3.14.7.
+2. Load typed configuration from the supported environment source.
+3. Compose exactly one development LLM adapter, one development embedding adapter, and Qdrant.
+4. Load a safe synthetic Markdown or text test document.
+5. Split it using application-owned code.
+6. Generate document embeddings through an OpenAI-compatible development adapter.
+7. Create or validate an isolated Qdrant collection with the matching dimension.
+8. Store vectors and provider-neutral payloads.
+9. Embed a query.
+10. Retrieve relevant chunks.
+11. Build grounded context.
+12. Generate an answer through LM Studio.
+13. Return a validated FastAPI response containing safe source information.
+14. Return safe platform errors without raw exception leakage.
+
+### Allowed Implementation Paths
+
+- `app/**`
+- `tests/**`
+- `scripts/**`
+- `.env.example`
+- `requirements.txt`
+- `requirements-dev.txt`
+
+No other path may be created or modified during implementation.
+
+### Prohibited Paths
+
+Do not modify:
+
+- `AGENTS.md` during implementation;
+- `README.md` or `docs/**`;
+- `.clinerules/**`;
+- `.roo/**`;
+- `.rooignore`;
+- `.env` or any secret file;
+- `knowledge/canonical/**`;
+- existing canonical source material;
+- unrelated repository files.
+
+### Required Implementation Constraints
+
+- Use CPython 3.14.7 strictly.
+- FastAPI remains the delivery framework.
+- Qdrant is the only vector store.
+- Support Qdrant Cloud and self-hosted Qdrant configuration.
+- Use direct approved SDK or protocol clients.
+- Remove all Chroma runtime paths.
+- Remove all LangChain runtime imports and assumptions.
+- Do not add LangChain packages.
+- LangGraph remains orchestration-only and need not be introduced merely to prove the development vertical slice.
+- Provider selection remains configuration-driven.
+- Exactly one provider implementation is active per capability.
+- Business logic must not depend on provider SDK types.
+- Use async contracts consistently and await every coroutine.
+- Prompt construction must not be owned by the provider adapter.
+- Qdrant must receive actual vectors, not natural-language text as a point query.
+- Qdrant collection dimension must match the active embedding model.
+- Use valid SDK vector, payload, filter, point, and response models.
+- Disable application answer caching unless a safe complete cache identity is implemented and tested.
+- API routes must not expose `str(exception)`, credentials, SDK responses, tracebacks, or internal paths.
+- Do not accept HTTP 500 as test success.
+- Do not claim production readiness.
+- Do not implement the complete authorization, canonical-corpus, reranking, agent-tool, streaming, production telemetry, or Bedrock-live scope.
+
+### Offline Test Policy
+
+Default tests must:
+
+- be deterministic;
+- be network-isolated;
+- use fakes or mocks for LM Studio and external Qdrant;
+- test startup, configuration, provider composition, embeddings, Qdrant mapping, ingestion, retrieval, grounded generation, safe errors, and API responses;
+- run under CPython 3.14.7; and
+- leave existing external services untouched.
+
+Offline verification must include:
+
+- `.venv/bin/python --version`;
+- `.venv/bin/python -m pytest -q`;
+- `.venv/bin/python -m compileall -q app tests scripts`;
+- `git diff --check`;
+- `git status --short --untracked-files=all`; and
+- a complete diff limited to the allowed implementation paths.
+
+The Python version must be exactly 3.14.7. If a required package is unavailable, follow the dependency boundary below rather than installing it automatically.
+
+### Owner-Authorized Live Development Gate
+
+The final live development gate may run only after offline tests pass and the owner explicitly authorizes that execution.
+
+The live gate may:
+
+- contact only the configured LM Studio endpoint;
+- contact only the configured Qdrant endpoint;
+- use existing configured credentials without printing, copying, or documenting them;
+- discover configured model identifiers without exposing tokens;
+- create one uniquely named development collection;
+- ingest only a safe synthetic test document; and
+- perform one retrieval and grounded-answer query.
+
+The live gate must not:
+
+- contact AWS Bedrock;
+- use production customer or transactional data;
+- import the 110-file canonical corpus;
+- modify or delete an existing Qdrant collection;
+- reset Qdrant;
+- overwrite existing vectors;
+- expose credentials; or
+- claim success unless the real response is verified.
+
+Leave the unique live-gate collection in place and report its name. Deletion requires separate owner approval.
+
+If LM Studio does not expose a usable embedding model, Qdrant credentials are unavailable, the configured embedding dimension is incompatible, or a live service cannot be reached, stop and report the exact blocker. Never fabricate a successful live result.
+
+### Dependency Boundary
+
+Codex may modify `requirements.txt` or `requirements-dev.txt` only when required by the approved direct-SDK architecture. Codex must not install packages automatically. If installation is required after manifest review, stop and request explicit owner approval with the exact package and command.
+
+### Evidence Requirements
+
+Report:
+
+- exact files changed;
+- the implemented startup, configuration, composition, ingestion, embedding, Qdrant, retrieval, grounding, generation, API, and safe-error flow;
+- mappings to any applicable FND-002 through FND-009 runtime-foundation requirements, without marking those tasks DONE;
+- exact commands executed and complete results;
+- CPython 3.14.7 evidence;
+- complete offline test, compilation, diff-check, status, and scoped-diff evidence;
+- dependency-manifest changes and any exact installation approval request;
+- live-gate authorization and execution status;
+- the unique Qdrant collection name if the live gate runs; and
+- exact blockers and deferred scope.
+
+Do not expose credentials, local `.env` contents, SDK responses containing private data, internal paths, or raw private data.
+
+### Stop Condition
+
+Stop after implementation and offline verification, then either complete an explicitly owner-authorized live gate or report its exact blocker or authorization requirement. Do not stage, commit, push, merge, delete branches, begin improvements beyond the working vertical slice, mark FND-002 through FND-009 DONE, claim production readiness, or begin another task automatically.

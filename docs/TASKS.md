@@ -3,11 +3,13 @@
 **Status:** ACTIVE
 **Version:** 2.0
 **Last Updated:** 2026-08-20
-**Implementation State:** FND-002 READY — CL-002 ONLY
+**Implementation State:** DEV-RAG-001 READY — CX-DEV-RAG-001 ONLY
 
 ## 1. Purpose
 
 This backlog converts ROADMAP.md into bounded tasks. A task is executable only when its dependencies are accepted and PROMPTS.md marks its prompt ARCHITECT_APPROVED.
+
+The current owner-prioritized program objective is a verified working development RAG vertical slice delivered as one bounded sequencing exception. Audit recommendations are advisory and do not become approved or executable merely by appearing in a review.
 
 ## 2. Statuses
 
@@ -32,7 +34,8 @@ This backlog converts ROADMAP.md into bounded tasks. A task is executable only w
 | ID | Priority | Task | Depends On | Status |
 | --- | --- | --- | --- | --- |
 | FND-001 | P0 | Configuration/startup validation boundary | GOV-003 | DONE |
-| FND-002 | P0 | Platform error taxonomy | FND-001 | READY |
+| DEV-RAG-001 | P0 | Working Development RAG Vertical Slice | FND-001, owner sequencing decision | READY |
+| FND-002 | P0 | Platform error taxonomy | FND-001 | PLANNED |
 | FND-003 | P0 | Async provider contract normalization | FND-002 | PLANNED |
 | FND-004 | P0 | Provider composition and one-active-provider selection | FND-003 | PLANNED |
 | FND-005 | P0 | Remove all legacy Chroma runtime/config/dependency paths | FND-004 | PLANNED |
@@ -40,6 +43,8 @@ This backlog converts ROADMAP.md into bounded tasks. A task is executable only w
 | FND-007 | P0 | Development embedding adapter | FND-003, FND-006 | PLANNED |
 | FND-008 | P0 | LM Studio/Qwen LLM adapter | FND-003, FND-004 | PLANNED |
 | FND-009 | P0 | Foundation contract/integration test harness | FND-006–008 | PLANNED |
+
+While DEV-RAG-001 is active, FND-002 through FND-009 are not independently executable. Applicable runtime-foundation requirements may be satisfied and mapped during DEV-RAG-001 review, but none may be marked DONE before review evidence is accepted.
 
 ## 5. Canonical Knowledge Foundation
 
@@ -114,4 +119,4 @@ Critical release criteria: zero permission leakage, zero fabricated inventory, z
 
 ## 10. Promotion Rule
 
-Exactly one implementation task is READY: FND-002 through CL-002. No later task is executable. Missing canonical corpus, API and authorization inputs continue to block only the tasks that depend on them. FND-001 is DONE. CL-001-R1 is ACCEPTED. No task becomes executable merely because it appears in the backlog.
+Exactly one implementation task is READY and executable: DEV-RAG-001 through CX-DEV-RAG-001. FND-001 remains DONE. FND-002 through FND-009 remain PLANNED and are not independently executable while DEV-RAG-001 is active. KB-001 remains BLOCKED_INPUT. Missing canonical corpus, authorization, external API, and production inputs continue to block only the tasks that require them. The audit's proposed 17-task sequence remains advisory and is not registered wholesale as an approved task sequence. Completion of DEV-RAG-001 requires review evidence, does not automatically mark any other task DONE, and does not make any later task executable.

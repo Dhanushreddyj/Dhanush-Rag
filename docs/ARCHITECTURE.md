@@ -15,12 +15,17 @@ It is written as an engineering specification, not as an implementation tutorial
 
 The authority order for engineering work is:
 
-1. `MASTER_CONTEXT.md` — project mandate and role boundaries;
-2. `PROJECT_VISION.md` — product and engineering north star;
+1. explicit owner decisions;
+2. accepted ADRs;
 3. `ARCHITECTURE.md` — approved structural and dependency rules;
-4. accepted ADRs — decisions and exceptions for specific architectural questions;
-5. engineering standards such as `CODE_STYLE.md`, `TESTING.md`, `SECURITY.md`, and `API_GUIDELINES.md`;
-6. task-specific acceptance criteria.
+4. `MASTER_CONTEXT.md` — project mandate and role boundaries;
+5. `PROJECT_VISION.md` — product and engineering north star;
+6. `TASKS.md`;
+7. `PROMPTS.md`;
+8. `REVIEW.md`;
+9. engineering standards such as `CODE_STYLE.md`, `TESTING.md`, `SECURITY.md`, and `API_GUIDELINES.md`;
+10. workspace rules;
+11. active-task restrictions.
 
 If code disagrees with this document, the disagreement is not automatically resolved in favor of either side. The engineer must determine whether the code is behind the approved architecture or the architecture document is stale. Material changes require an ADR or explicit architecture review.
 
@@ -784,13 +789,13 @@ The initial ADR set is tracked as follows:
 10. production telemetry stack — **DEFERRED, ADR-010** pending deployment/operations requirements;
 11. deployment/runtime topology — **DEFERRED, ADR-011** pending production operational requirements.
 
-12. canonical Nofeez knowledge source and lifecycle — **PROPOSED, ADR-012**;
-13. stable/live/model/action classification and query routing — **PROPOSED, ADR-013**;
-14. Qdrant hybrid retrieval and reranking — **PROPOSED, ADR-014**;
-15. permission-aware knowledge namespaces and context assembly — **PROPOSED, ADR-015**;
-16. incremental indexing and reconciliation — **PROPOSED, ADR-016**;
-17. source precedence, grounding and conflict handling — **PROPOSED, ADR-017**;
-18. AI evaluation and release gates — **PROPOSED, ADR-018**.
+12. canonical Nofeez knowledge source and lifecycle — **ACCEPTED, ADR-012**;
+13. stable/live/model/action classification and query routing — **ACCEPTED, ADR-013**;
+14. Qdrant hybrid retrieval and reranking — **ACCEPTED, ADR-014**;
+15. permission-aware knowledge namespaces and context assembly — **ACCEPTED, ADR-015**;
+16. incremental indexing and reconciliation — **ACCEPTED, ADR-016**;
+17. source precedence, grounding and conflict handling — **ACCEPTED, ADR-017**;
+18. AI evaluation and release gates — **ACCEPTED, ADR-018**.
 
 An ADR should record context, decision, alternatives considered, consequences, status, and supersession relationships.
 

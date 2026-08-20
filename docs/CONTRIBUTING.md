@@ -15,13 +15,17 @@ The goal is that a new senior engineer can understand not only what to change bu
 
 When guidance conflicts, use this order:
 
-1. `MASTER_CONTEXT.md`;
-2. `PROJECT_VISION.md`;
+1. explicit owner decisions;
+2. accepted ADRs;
 3. `ARCHITECTURE.md`;
-4. accepted ADRs;
-5. engineering standards (`CODE_STYLE.md`, `TESTING.md`, `SECURITY.md`, `API_GUIDELINES.md`, `OBSERVABILITY.md`);
-6. approved task acceptance criteria;
-7. implementation convenience.
+4. `MASTER_CONTEXT.md`;
+5. `PROJECT_VISION.md`;
+6. `TASKS.md`;
+7. `PROMPTS.md`;
+8. `REVIEW.md`;
+9. engineering standards (`CODE_STYLE.md`, `TESTING.md`, `SECURITY.md`, `API_GUIDELINES.md`, `OBSERVABILITY.md`);
+10. workspace rules;
+11. active-task restrictions.
 
 Do not silently resolve a material conflict. Escalate it to architecture review and create/supersede an ADR when appropriate.
 

@@ -5,7 +5,7 @@
 **Project:** Enterprise AI Platform for Real Estate
 **Owner:** Dhanush Reddy
 **Primary Architect:** ChatGPT (Principal AI Architect)
-**Implementation Engineer:** Cline (Local Qwen 3.6)
+**Implementation Engineer:** Codex
 **Repository:** https://github.com/Dhanushreddyj/Dhanush-Rag.git
 
 ## 1. Project Mission
@@ -101,7 +101,7 @@ Earlier numeric architecture scores and percentage estimates are treated as hist
 | Provider Strategy | Configuration-driven provider contracts. Development LLM: local Qwen 3.6 through LM Studio's OpenAI-compatible endpoint. Development embeddings: current development configuration. Production LLM: AWS Bedrock models. Production embeddings: AWS Bedrock Embedding Models. Exactly one implementation per provider capability is active at a time. |
 | Vector Database | Qdrant is the only approved V1 vector database in development and production |
 | Deployment | Independently deployable Python AI microservice behind the existing Next.js backend. Production deployment platform remains an explicit future decision. |
-| Development Tooling | Mac with VS Code + Cline; PC-hosted LM Studio for the current development LLM workflow |
+| Development Tooling | Mac with VS Code + Codex; PC-hosted LM Studio for the current development LLM workflow |
 
 Streaming responses and session-scoped memory are platform capabilities, not provider/technology selections.
 
@@ -111,7 +111,7 @@ Technologies are not replaced or expanded without an explicit decision. Current 
 
 Development uses a split-machine workflow:
 
-- **Mac:** VS Code, Cline, source development, and local project workflow;
+- **Mac:** VS Code, Codex, source development, and local project workflow;
 - **PC:** LM Studio inference server using Qwen 3.6 14B A3B FableVibes Q5/Q4 on RTX 4070 Super / Ryzen 9700X / 32 GB RAM.
 
 The PC is treated as a network LLM provider endpoint. Application source must not hard-code its LAN IP, port, API key, or model name.
@@ -223,13 +223,13 @@ Documentation is part of the architecture, not after-the-fact explanation.
 
 ## 13. Development Workflow
 
-`Requirement -> Architecture Decision -> Scoped Prompt -> Cline Implementation -> Tests -> Code Review -> Merge`
+`Requirement -> Architecture Decision -> Scoped Prompt -> Codex Implementation -> Tests -> Code Review -> Merge`
 
 Every logical module is reviewed before merge. The project is never generated or rewritten in one large AI prompt.
 
-## 14. Cline/Qwen Rules
+## 14. Implementation Tool Rules
 
-Cline/Qwen must:
+The active implementation engineer must:
 
 - read the task-specified engineering documents before changes;
 - never redesign the architecture;
@@ -248,9 +248,11 @@ Cline/Qwen must:
 
 Owns architecture, engineering decisions, code reviews, refactoring plans, implementation prompts, roadmap coherence, and engineering documentation quality.
 
-### Implementation Engineer — Cline / Local Qwen
+### Implementation Engineer — Codex
 
 Implements/refactors scoped modules, writes tests and task-specific documentation, fixes approved defects, and does not redesign architecture.
+
+Cline and Roo are inactive implementation tools unless explicitly reauthorized by the project owner.
 
 ### Project Owner — Dhanush Reddy
 
@@ -263,9 +265,11 @@ Owns product direction and final decision authority.
 - `ARCHITECTURE.md`: ACCEPTED v1.3.
 - Initial ADR set: complete for the currently decidable architecture. ADR-001 through ADR-008 are ACCEPTED; ADR-009 through ADR-011 explicitly defer authentication/trust mechanism, telemetry-stack selection, and deployment/runtime topology until their production decision inputs exist.
 - Engineering standards: `CODE_STYLE.md`, `CONTRIBUTING.md`, `TESTING.md`, `SECURITY.md`, `API_GUIDELINES.md`, and `OBSERVABILITY.md` are ACCEPTED v1.0.
-- Previous implementation entry for FND-001 is suspended pending acceptance of the 110-module Nofeez requirements alignment.
-- No Cline implementation prompt is executable while this governance change is under review.
-- Local uncommitted FND-001 work must be preserved but not merged until the revised task sequence and prompt are accepted.
+- FND-001 is DONE and its implementation evidence is accepted.
+- DEV-RAG-001 through CX-DEV-RAG-001 is the sole executable implementation task and prompt. It is an explicit owner-authorized sequencing exception for a verified working development RAG vertical slice and does not change the approved architecture.
+- FND-002 through FND-009 remain PLANNED and are not independently executable while DEV-RAG-001 is active. Applicable requirements may be mapped during review, but no task becomes DONE without accepted evidence.
+- Later improvements remain gated and must not begin automatically. The implementation is not production-ready.
+- Codex is the active implementation engineer; Cline and Roo remain inactive unless explicitly reauthorized.
 
 ## 17. Long-Term Goal
 
